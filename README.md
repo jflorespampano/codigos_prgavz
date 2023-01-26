@@ -1,15 +1,15 @@
 # codigos_prgavz
-##Objetivo
+## Objetivo
 Este material esta orientado a los alumnos del curso de programación avanzada de ITCC de la UNACAR
-##HTML
+## HTML
 Conjunto básico de ejercicios html
-##CSS
+## CSS
 Ejemplos de uso de CSS
-##W3CSS
+## W3CSS
 Ejemplos de uso de W3CSS
-##JS
+## JS
 Sentencias básicas de JS con promesas y Fetch
-##PHP
+## PHP
 Sintaxis básica de php
-##MySql
+## MySql
 Crear una base de datos en mysql y consultarla desde php
