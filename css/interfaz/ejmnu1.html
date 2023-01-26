@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		ul {
+		list-style-type: none; /*sin la marca de la lista (el punto)*/
+		margin: 0;
+		padding: 0;
+		overflow: hidden; /* no mostrar barra de desplazamiento*/
+		border: 1px solid #e7e7e7;
+		background-color: #f3f3f3;
+		}
+
+		li {
+		float: left;
+		}
+
+		li a {
+		display: block; /*despliega la opcion en modo de una caja ocupando todo su espacio*/
+		color: #666;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+		}
+
+		li a:hover:not(.active) { /*cuando el cursos pasa sobre las opciones no activas*/
+		background-color: #ddd;
+		}
+
+		li a.active { /*la opcion activa*/
+		color: white;
+		background-color: #4CAF50;
+		}
+	</style>
+</head>
+<body>
+
+	<ul>
+		<li><a id="op_1" class="active" href="altaAlumno.html">Alta alumno</a></li>
+		<li><a id="op_2" href="buscarAlumno.html">Buscar Alumno</a></li>
+		<li><a id="op_3" href="mostrarAlumnos.html">Mostrar alumnos</a></li>
+		<li><a id="op_4" href="#about">Acerca de</a></li>
+	</ul>
+	
+</body>
+
+</html>
