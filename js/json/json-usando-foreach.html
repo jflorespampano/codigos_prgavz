@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8">
+        
+    </head>
+    <body>
+        
+        <input type="button" id="btnMostrar" name="mostrar" value="mostrar json">        
+
+    </body>
+    <script>
+		var personas=[{
+                "id":"01",
+                "nombre":"juan"
+            },{
+                "id":"02",
+                "nombre":"toño"
+            },
+            {
+                "id":"03",
+                "nombre":"sánchez"
+			},
+            {
+                "id":"04",
+                "nombre":"rodriguez"
+			},
+            {
+                "id":"05",
+                "nombre":"lopitos"
+			}
+		];
+        
+        window.onload=function(){
+            document.getElementById("btnMostrar").addEventListener("click", function(){
+                var content="";
+                personas.forEach(function(element) {
+					//se accede al json con:element["id"] o con:element.id
+                    content+="id:"+element["id"]+", nombre:"+element.nombre+"\n";
+                });
+                console.log(content);
+            });
+            
+        }
+    </script>
+</html>

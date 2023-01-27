@@ -1,0 +1,54 @@
+<!doctype <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    
+</head>
+<body>
+            <div id="div_op_1" style="display:block;">
+                <p>opcion 1</p>
+                <div id=contenidoOp1>
+                    <form id="frm_inserta_persona" name="frm_persona">
+                        <label for="txtId">ID</label>
+                        <input id="txtId" type="text" placeholder="ID" name="id" value="01">
+                        <label for="txtNombre">Nombre</label>
+                        <input id="txtNombre" type="text" placeholder="escribe tu nombre" name="nombre" value="mi nombre">
+                        <label for="txtEdad">Edad</label>
+                        <input id="txtEdad" type="text" placeholder="edad" name="edad" value="0">
+                        <label for="cmbCiudad">Ciudad</label>
+                        <select id="cmbCiudad" name="ciudad">
+                            <option value="pu">Puebla</option>
+                            <option value="cc">cd del Carmen</option>
+                            <option value="vh">Villa Hermosa</option>
+                        </select>
+                        <label for="cmbTrabajo">Trabajo</label>
+                        <select id="cmbTrabajo" name="trabajo">
+                            <option value="plomero">plomero</option>
+                            <option value="carpintero">carpintero</option>
+                            <option value="albañil">albañil</option>
+                        </select>
+                        <input id="btnAlta" type="button" value="Agregar Alumno" onclick="accede_frm()">
+                    </form>
+                </div>
+            </div>
+</body>
+<script>
+    function accede_frm(){
+            console.log("insertando persona...");
+            //acceder a los elementos del form x si id
+            let id = document.forms["frm_inserta_persona"]["txtId"].value;
+            let nombre = document.forms["frm_inserta_persona"]["txtNombre"].value;
+            let edad = document.forms["frm_inserta_persona"]["txtEdad"].value;
+            let ciudad = document.forms["frm_inserta_persona"]["cmbCiudad"].value;
+            let trabajo = document.forms["frm_inserta_persona"]["cmbTrabajo"].value;
+            console.log(id+nombre+edad+ciudad+trabajo);
+            //acceder a los elementos del form x su name
+            let nid = document.forms.frm_persona.elements.id.value;
+            let nnombre = document.forms.frm_persona.elements.nombre.value;
+            console.log("por nombre: "+nid+","+nnombre);
+    }
+    window.onload=function(){
+        
+    }
+</script>
+</html>

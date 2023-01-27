@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Datos actuales en el JSON</h2>
+    <div id="datos"></div>
+    <h2>Captura de nuevo dato</h2>
+    <p>Se agregara un profesor con los datos: 'id'='c10', 'salon'='313', 'profesor'= 'alejandro'</p>
+    <p>Capture los datos de la metaria para ese profesor, por ejemplo id=m05, nombre=inteligencia artificial</p>
+    <p>creditos=8</p>
+    <form>
+        <label for="id">id de materia</label>
+        <input type="text" id="id" placeholder="id materia">
+        <label for="nombre">curso</label>
+        <input type="text" id="nombre" placeholder="nombre materia">
+        <label for="creditos">creditos</label>
+        <input type="text" id="creditos" placeholder="creditos materia">
+        <input type="button" value="insertar" onclick="insertar()">
+    </form>
+</body>
+    <script>
+        var cursos=[
+            {
+                'id':'c01',
+                'salon':'301',
+                'profesor':'juan',
+                'materia':{
+                    'id':'m01',
+                    'nombre':'algebra',
+                    'creditos':'8'
+                }
+            },
+            {
+                'id':'c02',
+                'salon':'302',
+                'profesor':'pedro',
+                'materia':{
+                    'id':'m02',
+                    'nombre':'logica',
+                    'creditos':'7'
+                }
+            }
+        ];
+        function muestraDatos(){
+            document.getElementById("datos").innerHTML=JSON.stringify(cursos);
+        }
+        function insertar(){
+            let materia={'id':'','nombre':'','creditos':''};
+            materia.id=document.getElementById("id").value;
+            materia.nombre=document.getElementById("nombre").value;
+            materia.creditos=document.getElementById("creditos").value;
+            let micurso={
+                'id':'c10', 'salon':'313', 'profesor': 'alejandro',
+                'materia': materia
+            };
+            cursos.push(micurso);
+            console.log(cursos);
+            muestraDatos();
+        }
+        window.onload=function(){
+            muestraDatos();
+        }
+    </script>
+</html>

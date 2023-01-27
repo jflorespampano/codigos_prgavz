@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+  <p>Uso de for in para acceder a los valores del json.</p>
+
+  <p id="demo"></p>
+
+  <script>
+    var myJson = {"name":"John", "age":30, "car":null};
+    for (let x in myJson) {
+      document.getElementById("demo").innerHTML += ","+myJson[x];
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<script>
+    //persona
+    let persona={
+        "id":"01",
+        "nombre":"ana",
+        "empleo":"plomero"
+    };
+    //mostrando valor de un json
+    console.log("mostrando atributos de un json");
+    console.log("sintaxis 1: "+persona.nombre);
+    //o con esta sintaxis
+    console.log("sintaxis 2: "+persona['nombre']);
+    //json de json
+    let json = {
+        "0":{
+            "id":"01",
+            "nombre":"ana",
+            "empleo":"plomero"
+        },
+        "1":{
+            "id":"01",
+            "nombre":"rosa",
+            "empleo":"alabañil"
+        },
+        "2":{
+            "id":"01",
+            "nombre":"luis",
+            "empleo":"plomero"
+        }
+    };
+    //recorrer un dato json:
+    s="";
+    for (let i in json) {
+        if(json[i].hasOwnProperty("nombre")){
+            s+=json[i].nombre+",";
+        }
+    };
+    console.log("recorriendo elementos de un json anidado");
+    console.log("la cadena trae ->"+s);
+    //arreglo de json
+    let arrjson = [
+        {
+            "id":"01",
+            "nombre":"ana",
+            "empleo":"plomero"
+        },
+        {
+            "id":"01",
+            "nombre":"rosa",
+            "empleo":"alabañil"
+        },
+        {
+            "id":"01",
+            "nombre":"luis",
+            "empleo":"plomero"
+        }
+    ];
+    //recorrer un arreglo json
+    console.log("recorriendo el [] json");
+    arrjson.forEach(function(e){
+        console.log(e.empleo);
+    });
+    console.log("json con indice");
+    arrjson.forEach(function(item, index){
+        console.log("indice " + index + " " + item.empleo );
+    });
+</script>

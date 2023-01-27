@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="utf-8">
+    </head>
+    <body>
+        <form id="miformulario">
+            <input type="radio" name="sexo" value="mujer">F<br>
+            <input type="radio" name="sexo" value="hombre">M<br>
+            <input type="text" name="id" placeholder="id"><br>
+            <input type="text" name="nombre" placeholder="nombre"><br>
+            <input type="text" name="apellido" placeholder="apellido"><br>
+            <input type="number" name="edad" placeholder="18"><br>
+            <input type="button" id="mi_boton" onclick="enviarDatos()" value="enviar datos">
+        </form>
+        <div id="div1"></div>
+    </body>
+    <script>
+        function enviarDatos(){
+            //obtenemos los datos del formulario
+            const data = new FormData(document.getElementById('miformulario'));
+            //ahora tenemos acceso a los datos
+            //muestra todos los datos del formulario
+            let output = "";
+            for (const entry of data) {
+                output = `${output}${entry[0]}=${entry[1]}\r`;
+            }
+            const log = document.querySelector("#div1");
+            log.innerText = output;
+            //accede a un elemento en particular
+            console.log(data.get('nombre'));
+            data.set('nombre','luis roberto');
+            console.log(data.get('nombre'));
+        }
+    </script>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <style>
+            .clase1{
+                color:blue;
+            }
+            .clase2{
+                color:blueviolet;
+            }
+        </style>
+    </HEAD>
+    <body>
+        <p id="parrafo1">mi parrafo 1</p>
+        <p id="parrafo2">mi parrafo 2</p>
+        <p id="parrafo3">mi parrafo 3</p>
+        <div id="midiv"></div>
+        <button id="boton1" onclick="fclk1()">cambiar letra parrafo 1</button><br>
+        <button id="boton2" onclick="fclk2()">agregar contenido al div</button><br>
+        <button id="boton3" onclick="fclk3()">quitar color azul a parrafo1</button><br>
+        <button id="boton4" onclick="fclk4()">poner clase4 a todos los parrafos</button><br>
+        <button id="boton5" onclick="fclk5()">quitar clase4 a todos los parrafos</button><br>
+    </body>
+    <script>
+        function fclk1(){
+            document.getElementById("parrafo1").classList.add("clase1");
+        }
+        function fclk2(){
+            document.getElementById("midiv").innerHTML="<p class='clase2'>parrafo agregado</p>";
+        }
+        function fclk3(){
+            document.getElementById("parrafo1").classList.remove("clase1");
+        }
+        function fclk4(){
+            //devuelve una colecion de nodos
+            var lista=document.querySelectorAll("p");
+            lista.forEach(function(e){
+                e.classList.add("clase2");
+            });
+        }
+        function fclk5(){
+            //devuelve una lista de nodos
+            var lista=document.getElementsByTagName("p");
+            for(let i=0;i<lista.length;i++){
+                lista[i].classList.remove("clase2");
+            };
+
+        }
+
+    </script>
+</HTML>

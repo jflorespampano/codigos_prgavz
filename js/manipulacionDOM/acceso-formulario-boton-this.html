@@ -1,0 +1,47 @@
+<!doctype <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    
+</head>
+<body>
+            <div id="div_op_1" style="display:block;">
+                <p>opcion 1</p>
+                <div id=contenidoOp1>
+                    <form id="frm_inserta_persona" name="frm_persona">
+                        <label for="txtId">ID</label>
+                        <input id="txtId" type="text" placeholder="ID" name="id" value="01">
+                        <label for="txtNombre">Nombre</label>
+                        <input id="txtNombre" type="text" placeholder="escribe tu nombre" name="nombre" value="mi nombre">
+                        <label for="txtEdad">Edad</label>
+                        <input id="txtEdad" type="text" placeholder="edad" name="edad" value="0">
+                        <label for="cmbCiudad">Ciudad</label>
+                        <select id="cmbCiudad" name="ciudad">
+                            <option value="pu">Puebla</option>
+                            <option value="cc">cd del Carmen</option>
+                            <option value="vh">Villa Hermosa</option>
+                        </select>
+                        <label for="cmbTrabajo">Trabajo</label>
+                        <select id="cmbTrabajo" name="trabajo">
+                            <option value="plomero">plomero</option>
+                            <option value="carpintero">carpintero</option>
+                            <option value="albañil">albañil</option>
+                        </select>
+                        <input id="btnAlta" type="button" value="Agregar Alumno" onclick="accede_frm(this)">
+                    </form>
+                </div>
+            </div>
+</body>
+<script>
+    function accede_frm(elem){
+        let frm=elem.form;    
+        //acceder a los elementos del form x su name
+        let nid = frm.elements.id.value;
+        let nnombre = frm.elements.nombre.value;
+        console.log("por nombre: "+nid+","+nnombre);
+    }
+    window.onload=function(){
+        
+    }
+</script>
+</html>

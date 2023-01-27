@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD></HEAD>
+    <body></body>
+    <script>
+        function mifuncion(msg){
+            document.write("funcion normal escribio:"+msg+"<br>");
+        }
+        //una función se puede asignar a una variable
+        var vf=function(msg){
+            document.write("funcion asignada a variable escribio:"+msg+"<br>");
+        }
+        //funcion flecha (lista parámetros)=>{sentencias}
+        var mifuncionflecha=(msg)=>{
+            document.write("funcion flecha escribio:"+msg+"<br>");
+        };
+        window.onload=function(){
+            mifuncion("hola cero");
+            vf("hola uno");
+            mifuncionflecha("hola dos");
+            ((msg)=>{
+                document.write("funcion autoinvocada escribio:"+msg+"<br>");
+            })("hola autoinvocada");
+        }
+    </script>
+</HTML>
