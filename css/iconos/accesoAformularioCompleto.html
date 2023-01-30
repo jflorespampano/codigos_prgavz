@@ -2,11 +2,15 @@
 <html>
     <head>
             <meta charset="utf-8">
+            <link rel="stylesheet" href="icono.min.css">
+            <!--íconos descargados desde: https://github.com/saeedalipoor/icono -->
     </head>
     <body>
         <form id="miformulario">
             <h2>Datos del cliente</h2>
+            <i class="icono-user"></i><br>
             <fieldset>
+                
                 <legend>Sexo</legend>
                 <input type="radio" name="sexo" value="mujer" checked>F<br>
                 <input type="radio" name="sexo" value="hombre">M<br>
@@ -16,15 +20,19 @@
                 <input type="text" name="nombre" placeholder="nombre"><br>
                 <input type="text" name="apellido" placeholder="apellido"><br>
                 <input type="number" name="edad" placeholder="18"><br>
+                <i class="icono-calendar"></i>
                 <label>Fecha</label>
                 <input type="date" id="fecha" name="fecha" value="2023-01-22" min="2022-01-12" max="2024-12-31">
+                <i class="icono-calendar"></i>
                 <label for="fecha2">Fecha y hora:</label>
                 <input type="datetime-local" id="meeting-time"
                     name="fecha2" value="2023-01-12T19:30"
                     min="2023-01-01T00:00" max="2021-01-30T00:00">
+                <i class="icono-clock"></i>
                 <label for="appt">seleccione hora:</label>
                 <input type="time" id="appt" name="appt" min="09:00" max="18:00" value="13:30" required>
             </fieldset>
+
             <fieldset>
                 <legend>Frutas preferidas</legend>
                 <label><input type="checkbox" id="mango" name="mango" value="01" checked>mango</label>
