@@ -2,7 +2,8 @@
 ## Objetivo
 Este material esta orientado a los alumnos del curso de programación avanzada de ITCC de la UNACAR
 ## HTML
-Conjunto básico de ejercicios html
+Conjunto básico de ejercicios html pra el curso.  
+Las ligas de referencia de este tema son:
 
 [referencia HTML](https://www.w3schools.com/html/)
 
