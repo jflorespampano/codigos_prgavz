@@ -13,7 +13,7 @@
             </fieldset>
             <fieldset>
                 <input type="text" name="id" placeholder="id"><br>
-                <input type="text" name="nombre" placeholder="nombre"><br>
+                <input type="text" id="txt_nombre" name="nombre" placeholder="nombre"><br>
                 <input type="text" name="apellido" placeholder="apellido"><br>
                 <input type="number" name="edad" placeholder="18"><br>
                 <label>Fecha</label>
@@ -57,6 +57,8 @@
             console.log(data.get('nombre'));
             data.set('nombre','luis roberto');
             console.log(data.get('nombre'));
+			const txt_nombre=document.querySelector('#txt_nombre');
+			txt_nombre.value='nuevo nombre';
         }
     </script>
 </html>
