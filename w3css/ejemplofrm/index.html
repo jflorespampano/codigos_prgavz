@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<<device-width>>, initial-scale=1.0">
+    <title>mi pagina</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+<body>
+    <div class="div_main">
+        <form class="w3-panel w3-pale-green" id="frm_alta">
+            <fieldset class="w3-panel w3-pale-blue w3-padding-16">
+                <legend>id</legend>
+                <label for="txt_id">id</label>
+                <input type="text" id="txt_id" name="id">
+            </fieldset>
+            <fieldset class="w3-panel w3-pale-blue w3-padding-16">
+                <legend>sexo</legend>
+                <label for="rb_h">hombre</label>
+                <input type="radio" id="rb_h" name="sexo" value="h">
+                <label for="rb_m">mujer</label>
+                <input type="radio" id="rb_m" name="sexo" value="m" checked>
+            </fieldset>
+            <fieldset class="w3-panel w3-pale-blue w3-padding-16">
+                <legend>estado</legend>
+                <label for="cmb_estado"></label>
+                <select id="cmb_estado">
+                    <option value="PU">Puebla</option>
+                    <option value="MX">Mexico city</option>
+                    <option value="CC">Ciudad del Carmen</option>
+                    <option value="CA">Campeche</option>
+                    <option value="VH">Villa Hermosa</option>
+                </select>
+            </fieldset>
+            <fieldset class="w3-panel w3-pale-blue w3-padding-16">
+                <label for="_semana"></label>
+                <input type="week" id="_semana">
+            </fieldset>
+        </form>
+        <input type="button" id="btn_aceptar" value="enviar">
+        <input type="button" id="btn_cancelar" value="cancelar">
+    </div>
+    <script src="./js/main.js"></script>
+</body>
+</html>
