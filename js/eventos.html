@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="txt_id" placeholder="id">
+    <input type="text" id="txt_nombre" placeholder="nombre">
+    <input type="button" id="btn_aceptar" value="muestra">
+    <input type="button" id="btn_aceptar2" value="agrega" onclick="atiende2()">
+    <div id="div_uno">
+
+    </div>
+    <p id="mi_parrafo"></p>
+</body>
+<script>
+    let personas=[
+        {'id':'01', 'nombre':'juan'},
+        {'id':'02', 'nombre':'luis'},
+        {'id':'03', 'nombre':'pedro'},
+
+    ];
+    function muestra(){
+        let s="";
+        personas.forEach(element => {
+            // s+="<p>"+element.id+","+element.nombre+"</p>"
+            s+=`<p>${element.id}; ${element.nombre}</p>`;
+        });
+        document.querySelector("#div_uno").innerHTML=s;
+    }
+    function atiende2(){
+        const id=document.querySelector("#txt_id").value;
+        const nombre=document.querySelector("#txt_nombre").value;
+
+        let dato={'id':id,'nombre':nombre};
+        personas.push(dato);
+        document.querySelector("#mi_parrafo").innerText=JSON.stringify(personas);
+    }
+    window.onload=()=>{
+        const b=document.querySelector("#btn_aceptar");
+        b.addEventListener("click",muestra)
+    }
+</script>
+</html>
