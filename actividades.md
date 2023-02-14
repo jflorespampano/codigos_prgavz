@@ -35,10 +35,11 @@ El siguiente código revisa los gustos seleccionado y los muestra en la cosola:
 </body>
 <script>
     function mifuncion(){
-        
+        //obtener todos los tags con atributo name='gustos' y que esten seleccionados
         let tagGustos=document.querySelectorAll('input[name="gustos"]:checked');
+        //para cada elmento en la lista obtenida hacer
         tagGustos.forEach(element => {
-                console.log("le gsuta: "+element.value);
+                console.log("le gusta: "+element.value);
         });
     }
 </script>
