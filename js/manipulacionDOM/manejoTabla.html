@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8">
+        
+    </head>
+    <body>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <td>id</td>
+                        <td>nombre</td>
+                        <td>sexo</td>
+                    </tr>
+                </thead>
+                <tbody id="datosTabla"></tbody>
+            </table>
+            <input type="button" id="btnMostrarM"  value="mostrar mujeres">        
+            <input type="button" id="btnMostrarT"  value="mostrar todos">        
+            <input type="button" id="ocultarId"  value="ocultar Id">        
+            <input type="button" id="mostrarId"  value="mostrar Id">        
+        </div>
+
+    </body>
+    <script>
+		var personas=[{
+                "id":"01",
+                "nombre":"juan",
+                "sexo": "m"
+            },{
+                "id":"02",
+                "nombre":"toño"
+                ,
+                "sexo": "m"
+            },
+            {
+                "id":"03",
+                "nombre":"bety"
+                ,
+                "sexo": "f"
+			},
+            {
+                "id":"04",
+                "nombre":"rosa"
+                ,
+                "sexo": "f"
+			},
+            {
+                "id":"05",
+                "nombre":"josé"
+                ,
+                "sexo": "m"
+			}
+		];
+        /**
+        *carga todos los datos a la tabla
+        */ 
+        function cargaDatosTabla(){
+            var content="";
+            personas.forEach(function(element) {
+                content+="<tr>";
+                content+="<td>"+element["id"]+"</td><td>"+element.nombre+"</td><td>"+element.sexo+"</td>";
+                content+="</tr>";
+            });
+            document.getElementById("datosTabla").innerHTML=content;
+        }
+        window.onload=function(){
+            cargaDatosTabla();
+
+            /**
+             *agregamos el manejador de eventos al boton btnMostrarM
+             *para mostrar renglones consexo femenono
+             */
+            document.getElementById("btnMostrarM").addEventListener("click", function(){
+                let filas=document.getElementById("datosTabla").rows;
+                let nf=filas.length;
+                for(let i=0;i<nf;i++){
+                    if(filas[i].cells[2].innerText=='m'){
+                        filas[i].style.display='none';
+                    }
+                }
+            });
+            //mostramos todos los renglones
+            document.getElementById("btnMostrarT").addEventListener('click',()=>{
+                let filas=document.getElementById("datosTabla").rows;
+                let nf=filas.length;
+                for(let i=0;i<nf;i++){    
+                    filas[i].style.display='';
+                }
+            });
+            document.querySelector('#ocultarId').addEventListener('click',()=>{
+                filas=document.getElementById('datosTabla').rows;
+                for(let i=0;i<filas.length;i++){
+                    filas[i].cells[0].style.display='none';
+                }
+            });
+            document.querySelector('#mostrarId').addEventListener('click',()=>{
+                filas=document.getElementById('datosTabla').rows;
+                for(let i=0;i<filas.length;i++){
+                    filas[i].cells[0].style.display='';
+                }
+            });
+        }
+        
+    </script>
+</html>

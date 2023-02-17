@@ -35,17 +35,17 @@
 <script>
     function accede_frm(){
             console.log("insertando persona...");
-            //acceder a los elementos del form x si id
+            //acceder a los elementos del form x su id
             let id = document.forms["frm_inserta_persona"]["txtId"].value;
             let nombre = document.forms["frm_inserta_persona"]["txtNombre"].value;
             let edad = document.forms["frm_inserta_persona"]["txtEdad"].value;
             let ciudad = document.forms["frm_inserta_persona"]["cmbCiudad"].value;
             let trabajo = document.forms["frm_inserta_persona"]["cmbTrabajo"].value;
-            console.log(id+nombre+edad+ciudad+trabajo);
+            console.log('datos em el id: '+id+','+nombre+','+edad+','+ciudad+','+trabajo);
             //acceder a los elementos del form x su name
             let nid = document.forms.frm_persona.elements.id.value;
             let nnombre = document.forms.frm_persona.elements.nombre.value;
-            console.log("por nombre: "+nid+","+nnombre);
+            console.log("por nombre: "+nid+", "+nnombre);
     }
     window.onload=function(){
         

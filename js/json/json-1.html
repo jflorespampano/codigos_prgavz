@@ -28,14 +28,14 @@
             "empleo":"plomero"
         }
     };
-    //recorrer un dato json:
+    //recorrer un dato json anidado:
     s="";
     for (let i in json) {
         if(json[i].hasOwnProperty("nombre")){
             s+=json[i].nombre+",";
         }
     };
-    console.log("recorriendo elementos de un json anidado");
+    console.log("recorriendo elementos de un arreglo json");
     console.log("la cadena trae ->"+s);
     //arreglo de json
     let arrjson = [
