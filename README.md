@@ -174,10 +174,14 @@ La función agregar_persona sería:
         });
     }
 ```
+En el navegador Chrome puede en las herramientas de programador (presione f12), ir a la pestaña: Aplicacion/Almacenamiento/WebSql para ver la base de datos.
 
+Puede borrar la base de datos en la pestaña: Aplicacion/Almacenaminto y en la ventana derecha clic en el botón: Borrar <datos del sitio>
 Referencias:
 [Web Sql](https://www.w3big.com/es/html/html5-web-sql.html#gsc.tab=0)
+
 [Almacenamiento local](https://www.arkaitzgarro.com/html5/capitulo-8.html)
+ 
 ## MySql
 Crear una base de datos en mysql y consultarla desde php
 
