@@ -35,6 +35,15 @@ Sintaxis básica de php
 
 [referencia php](https://www.w3schools.com/php/)
 
+## WebSql
+es una especificación con un conjunto de APIs para utilizar una base de datos de SQL.
+Web SQL Database es una API de página web para almacenar datos en bases de datos que pueden consultarse utilizando una variante de SQL.
+
+La API es compatible con Google Chrome,3 Opera,4 y el navegador integrado de Android .
+
+El Grupo de Trabajo de Aplicaciones Web de la W3C dejó de trabajar en la especificación en noviembre de 2010, citando la falta de implementaciones independientes (es decir, el uso de un sistema de base de datos que no sea SQLite como back-end) como la razón por la cual la especificación no pudo avanzar para convertirse en una Recomendación del W3C.1
+
+Mozilla Corporation fue una de las principales voces detrás de la ruptura de las negociaciones y la desaprobación de la norma, mientras que al mismo tiempo fueron los principales defensores de una norma de 'almacenamiento alternativo', IndexedDB.
 ## MySql
 Crear una base de datos en mysql y consultarla desde php
 
