@@ -36,7 +36,7 @@ Sintaxis básica de php
 [referencia php](https://www.w3schools.com/php/)
 
 ## WebSql
-es una especificación con un conjunto de APIs para utilizar una base de datos de SQL.
+Es una especificación con un conjunto de APIs para utilizar una base de datos de SQL.
 Web SQL Database es una API de página web para almacenar datos en bases de datos que pueden consultarse utilizando una variante de SQL.
 
 La API es compatible con Google Chrome,3 Opera,4 y el navegador integrado de Android .
@@ -53,6 +53,8 @@ No obstante es soportado por los navegadores arriba mencioonados, a continución
         return db;
     }
 ```
+Este comando esta abriendo (y si no la encuentra la crea) la base de datos personasDB, indicamos que es la primera version de la BD, un mensaje de descripcion, y el tamaño de la base de datos.
+
 ### Crear una tabla
 ```
     function crear_tabla_persona(db){
@@ -112,11 +114,46 @@ No obstante es soportado por los navegadores arriba mencioonados, a continución
     }
 
 ```
+
+Veamos como insertar una persona usando estas funciones, necesitaremos un formulario:
+```
+    <form id="frm_parsona">
+        <input type="text" name="id" placehholder="id">
+        <input type="text" name="nombre" placeholder="nombre">
+        <input type="button" value="agregar" onclick="agregar_persona()">
+    </form>
+    <input type="button" value="crear base de datos" onclick="crear_db()">
+    <input type="button" value="mostrar personas" onclick="get_peronas()">
+```
+La función de crear_db
+```
+    function crear_db(){
+        //
+        var db=abrirDB();
+        crear_tabla_persona(db);
+    }
+```
+La función agregar_persona sería:
+```
+    function agregar_persona(){
+        let f=document.getElementById("frm_parsona");
+        data=new FormData(f);
+        var object = {};
+        data.forEach((value, key) => object[key] = value);
+        var json = JSON.stringify(object);
+        console.log("mi json tiene:"+json);
+        var db=abrirDB();
+        //insertar_persona(db,{"id":2,"nombre":"roxana"});
+        insertar_persona(db,object);
+        get_peronas(db);
+    }
+```
 ### consultar datos
 ```
-    function get_peronas(db){
+    function get_peronas(){
         //leer datos
         let sql="select * from persona;";
+        var db=abrirDB();
         db.transaction(function(tx){
             tx.executeSql(sql,[],function(tx,result){
                 //console.log(result.rows);
@@ -138,38 +175,9 @@ No obstante es soportado por los navegadores arriba mencioonados, a continución
     }
 ```
 
-Veamos como insertar una persona usando estas funciones, necesitaremos un formulario:
-```
-    <form id="frm_parsona">
-        <input type="text" name="id" placehholder="id">
-        <input type="text" name="nombre" placeholder="nombre">
-        <input type="button" value="agregar" onclick="agregar_persona()">
-    </form>
-    <input type="button" value="crear base de datos" onclick="crear_db()">
-```
-La función de craer_db
-```
-    function crear_db(){
-        //
-        var db=abrirDB();
-    }
-```
-La función agregar_persona sería:
-```
-    function agregar_persona(){
-        let f=document.getElementById("frm_parsona");
-        data=new FormData(f);
-        var object = {};
-        data.forEach((value, key) => object[key] = value);
-        var json = JSON.stringify(object);
-        console.log("mi json tiene:"+json);
-        var db=abrirDB();
-        //insertar_persona(db,{"id":2,"nombre":"roxana"});
-        insertar_persona(db,object);
-        get_peronas(db);
-    }
-```
-
+Referencias:
+[Web Sql](https://www.w3big.com/es/html/html5-web-sql.html#gsc.tab=0)
+[Almacenamiento local](https://www.arkaitzgarro.com/html5/capitulo-8.html)
 ## MySql
 Crear una base de datos en mysql y consultarla desde php
 
