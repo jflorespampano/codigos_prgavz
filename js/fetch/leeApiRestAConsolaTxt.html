@@ -36,19 +36,7 @@
     <!-- <input type="button" onclick="miFuncion()" value="llenar tabla"> -->
 </body>
 <script>
-    let datos=[];
-    function cargaDatos(){
-        let s="";
-        datos.forEach(element => {
-            s+="<tr>";
-            s+="<td>"+element.id+"</td>";
-            s+="<td>"+element.userId+"</td>";
-            s+="<td>"+element.title+"</td>";
-            s+="<td>"+element.body+"</td>";
-            s+="</tr>"
-        });
-        document.querySelector("#tbl_datos").innerHTML=s;
-    }
+    
     function muestraDatosTxt(datostxt){
         console.log(datostxt);
     }

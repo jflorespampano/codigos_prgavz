@@ -40,12 +40,14 @@
     function cargaDatos(){
         let s="";
         datos.forEach(element => {
-            s+="<tr>";
-            s+="<td>"+element.id+"</td>";
-            s+="<td>"+element.userId+"</td>";
-            s+="<td>"+element.title+"</td>";
-            s+="<td>"+element.body+"</td>";
-            s+="</tr>"
+            s+=`
+                <tr>
+                <td>${element.id}</td>
+                <td>${element.userId}</td>
+                <td>${element.title}</td>
+                <td>${element.body}</td>
+                </tr>
+            `;
         });
         document.querySelector("#tbl_datos").innerHTML=s;
     }

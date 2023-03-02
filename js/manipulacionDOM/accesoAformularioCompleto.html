@@ -50,12 +50,13 @@
             const dataf = document.forms["miformulario"];
             //muestra el valor del eleento con name=apellido
             console.log("El apellido es:", dataf.apellido.value);
+            
             //obtenemos los datos del formulario con formdata
             //FormData: proporciona una forma de construir un conjunto de pares clave/valor 
             //que representan campos de formulario y sus valores
             const data = new FormData(document.getElementById('miformulario'));
             //ahora tenemos acceso a los datos
-            //muestra todos los datos del formulario
+            console.log("muestra todos los datos del formulario");
             let output = "";
             for (const entry of data) {
                 output = `${output}${entry[0]}=${entry[1]}\r`;
