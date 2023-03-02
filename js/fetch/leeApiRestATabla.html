@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mensajes</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+    <div class="w3-container">
+        <div class="w3-row">
+            <div class="w3-col l4 w3-padding">
+                <div class="w3-panel w3-cyan w3-padding-16">
+                    Captura de datos
+                </div>
+            </div>
+            <div class="w3-col l8 w3-padding">
+                <div class="w3-panel w3-cyan w3-padding-16">
+                    Datos existentes
+                </div>
+                <table class="w3-table-all">
+                    <thead>
+                        <tr>
+                            <td>id</td>
+                            <td>UserId</td>
+                            <td>titulo</td>
+                            <td>Cuerpo</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl_datos">
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <!-- <input type="button" onclick="miFuncion()" value="llenar tabla"> -->
+</body>
+<script>
+    let datos=[];
+    function cargaDatos(){
+        let s="";
+        datos.forEach(element => {
+            s+="<tr>";
+            s+="<td>"+element.id+"</td>";
+            s+="<td>"+element.userId+"</td>";
+            s+="<td>"+element.title+"</td>";
+            s+="<td>"+element.body+"</td>";
+            s+="</tr>"
+        });
+        document.querySelector("#tbl_datos").innerHTML=s;
+    }
+    function muestraDatosJson(datosjson){
+        //obtenemos los primeros 10 datos
+        datos=datosjson.slice(1,10)
+        console.log("Slice de datos json: ",datos);
+        //cargamos los datos a la tabla
+        cargaDatos();
+        
+    }
+    function callback1(data){
+        console.log("estamos en la funcion callback1, que se ejecuta cuando la promesa se resuelve");
+        console.log("respuesta del servidor cruda:",data);
+        if(data.ok){
+            console.log("Estado de la respuesta del servidor ok");
+            //filtramos los datos desde la respuesta cruda y la
+            //convertimos a un objeto json, con la funcion json(),
+            //la funcion json devuleve una promesa
+            dj=data.json();
+            //cuando se cumpla la promesa json() llama a la función muestraDatosJson
+            dj.then(muestraDatosJson);
+        }else{
+            console.log("estado de la respuesta del servidor  NO ok");
+        }
+    }
+    function leeJsonDesdeApiRest(){
+        let p=fetch("https://jsonplaceholder.typicode.com/posts");
+        console.log("vea que p es una promesa: ",p);
+        //cuando se resuleva la promesa llama a la función callback1
+        p.then(callback1);
+    }
+    window.onload=function(){
+        leeJsonDesdeApiRest();
+    };
+</script>
+</html>

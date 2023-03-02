@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app" class="w3-container">
+        <h1 v-if="datosCargados">Datos cargados!</h1>
+	    <h1 v-else>Oh no 😢</h1>
+        <div class="w3-row">
+            <div class="w3-col l4">
+                <p>{{ message }} {{ count }}</p>
+                <button @click="increment">{{ count }}</button>
+
+                <select v-model="estadoSeleccionado" id="docente">
+                    <option v-for="estado in estados" :value="estado.id">{{estado.nombre}}</option>
+                </select>
+            </div>
+            <div class="w3-col l8">
+                <p>mundo</p>
+                <button @click="datosCargados = !datosCargados">toggle</button>
+                <table>
+                    <thead>
+                        <td>user id</td>
+                        <td>id</td>
+                        <td>title</td>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in albums">
+                            <td>{{ item.userId}}</td>
+                            <td>{{ item.id}}</td>
+                            <td>{{ item.title}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="main.js"></script>
+</html>

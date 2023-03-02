@@ -4,7 +4,7 @@
             <meta charset="utf-8">
     </head>
     <body>
-        <form id="miformulario">
+        <form id="miformulario" name="f1">
             <h2>Datos del cliente</h2>
             <fieldset>
                 <legend>Sexo</legend>
@@ -50,42 +50,42 @@
             const dataf = document.forms["miformulario"];
             //muestra el valor del eleento con name=apellido
             console.log("El apellido es:", dataf.apellido.value);
-            //obtenemos los datos del formulario con formdata
-            //FormData: proporciona una forma de construir un conjunto de pares clave/valor 
-            //que representan campos de formulario y sus valores
-            const data = new FormData(document.getElementById('miformulario'));
-            //ahora tenemos acceso a los datos
-            //muestra todos los datos del formulario
-            let output = "";
-            for (const entry of data) {
-                output = `${output}${entry[0]}=${entry[1]}\r`;
-            }
-            const log = document.querySelector("#div1");
-            log.innerText = output;
-            //con forEach obtengo los valores solamente
-            let output2=``;
-            data.forEach(e => {
-                output2 = `${output2}${e}\n`;
-            });
-            console.log(output2);
-            //construir un json a partir de un FormData
-            json={};
-            for (const entry of data) {
-                json[`${entry[0]}`]=`${entry[1]}`;
-            }
-            console.log("Formdata a objeto JS: ", json);
-            console.log("objeto js a json:  ", JSON.stringify(json));
-            //accede a un elemento en particular
-            console.log(data.get('nombre'));
-            data.set('nombre','luis roberto');
-            console.log(data.get('nombre'));
-			const txt_nombre=document.querySelector('#txt_nombre');
-			txt_nombre.value='nuevo nombre';
-            //
+            console.log(dataf.elements[0]);
             //se puede acceder al formulario a travez de document con su name
             const datag= document.f1;
             //y al elemento con su name
             console.log(datag.sexo.value);
+            // //obtenemos los datos del formulario con formdata
+            // //FormData: proporciona una forma de construir un conjunto de pares clave/valor 
+            // //que representan campos de formulario y sus valores
+            // const data = new FormData(document.getElementById('miformulario'));
+            // //ahora tenemos acceso a los datos
+            // //muestra todos los datos del formulario
+            // let output = "";
+            // for (const entry of data) {
+            //     output = `${output}${entry[0]}=${entry[1]}\r`;
+            // }
+            // const log = document.querySelector("#div1");
+            // log.innerText = output;
+            // //con forEach obtengo los valores solamente
+            // let output2=``;
+            // data.forEach(e => {
+            //     output2 = `${output2}${e}\n`;
+            // });
+            // console.log(output2);
+            // //construir un json a partir de un FormData
+            // json={};
+            // for (const entry of data) {
+            //     json[`${entry[0]}`]=`${entry[1]}`;
+            // }
+            // console.log("Formdata a objeto JS: ", json);
+            // console.log("objeto js a json:  ", JSON.stringify(json));
+            // //accede a un elemento en particular
+            // console.log(data.get('nombre'));
+            // data.set('nombre','luis roberto');
+            // console.log(data.get('nombre'));
+			// const txt_nombre=document.querySelector('#txt_nombre');
+			// txt_nombre.value='nuevo nombre';
         }
     </script>
 </html>

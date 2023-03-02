@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mensajes</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+    <div class="w3-container">
+        <div class="w3-row">
+            <div class="w3-col l4 w3-padding">
+                <div class="w3-panel w3-cyan w3-padding-16">
+                    Captura de datos
+                </div>
+            </div>
+            <div class="w3-col l8 w3-padding">
+                <div class="w3-panel w3-cyan w3-padding-16">
+                    Datos existentes
+                </div>
+                <table class="w3-table-all">
+                    <thead>
+                        <tr>
+                            <td>id</td>
+                            <td>UserId</td>
+                            <td>titulo</td>
+                            <td>Cuerpo</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl_datos">
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <!-- <input type="button" onclick="miFuncion()" value="llenar tabla"> -->
+</body>
+<script>
+    let datos=[];
+    function cargaDatos(){
+        let s="";
+        datos.forEach(element => {
+            s+="<tr>";
+            s+="<td>"+element.id+"</td>";
+            s+="<td>"+element.userId+"</td>";
+            s+="<td>"+element.title+"</td>";
+            s+="<td>"+element.body+"</td>";
+            s+="</tr>"
+        });
+        document.querySelector("#tbl_datos").innerHTML=s;
+    }
+    function muestraDatosTxt(datostxt){
+        console.log(datostxt);
+    }
+    function callback1(data){
+        console.log(data);
+        if(data.ok){
+            console.log("respuesta del servidor ok");
+            data.text()
+            .then(muestraDatosTxt);
+        }else{
+            console.log("respuesta del servidor  no ok");
+        }
+    }
+    function leeJsonDesdeApiRest(){
+        let p=fetch("https://jsonplaceholder.typicode.com/posts");
+        console.log(p);
+        p.then(callback1);
+    }
+    window.onload=function(){
+        leeJsonDesdeApiRest();
+    };
+</script>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mensajes</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+    <div class="w3-container">
+        <div class="w3-row">
+            <div class="w3-col l4 w3-padding">
+                <div class="w3-panel w3-cyan w3-padding-16">
+                    Captura de datos
+                </div>
+            </div>
+            <div class="w3-col l8 w3-padding">
+                <div class="w3-panel w3-cyan w3-padding-16">
+                    Datos existentes
+                </div>
+                <table class="w3-table-all">
+                    <thead>
+                        <tr>
+                            <td>id</td>
+                            <td>UserId</td>
+                            <td>titulo</td>
+                            <td>Cuerpo</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl_datos">
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <!-- <input type="button" onclick="miFuncion()" value="llenar tabla"> -->
+</body>
+<script>
+    let datos=[
+    {
+        "userId": 1,
+        "id": 1,
+        "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+        "body": "quia et suscipit\nsuscipit recusandae consequuntur architecto"
+    },
+    {
+        "userId": 1,
+        "id": 2,
+        "title": "qui est esse",
+        "body": "est rerum tempore  molestiae ut reiciendis\nqui aperiam non debitis po nisi nulla"
+    },
+    {
+        "userId": 1,
+        "id": 3,
+        "title": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
+        "body": "et iusto sed quoe porro eius odio et labore et velit aut"
+    },
+    {
+        "userId": 1,
+        "id": 4,
+        "title": "eum et est occaecati",
+        "body": "ullam et saepe reiciendiscommodi nesciunt rem tenetur doloremque ipsam iure\nquis so velit"
+    },
+    {
+        "userId": 1,
+        "id": 5,
+        "title": "nesciunt quas odio",
+        "body": "repudiandae veniam quaerat suptatibus quis\nest aut tenetur dolor neque"
+    },
+    {
+        "userId": 1,
+        "id": 6,
+        "title": "dolorem eum magni eos aperiam quia",
+        "body": "ut aspernatur corporis harum nihils et ea nemo ab reprehenderit ores velit et doloremque molestiae"
+    },
+    {
+        "userId": 1,
+        "id": 7,
+        "title": "magnam facilis autem",
+        "body": "dolore placeat quibusdam ea quo vitae\nma sequi eos ea sed quas"
+    },
+    {
+        "userId": 1,
+        "id": 8,
+        "title": "dolorem dolore est ipsam",
+        "body": "dignissimos aperiam dolorem qui eum\nfacilis psam ut commodi dolor voluptatum modi aut vitae"
+    }];
+    function cargaDatos(){
+        let s="";
+        datos.forEach(element => {
+            s+="<tr>";
+            s+="<td>"+element.id+"</td>";
+            s+="<td>"+element.userId+"</td>";
+            s+="<td>"+element.title+"</td>";
+            s+="<td>"+element.body+"</td>";
+            s+="</tr>"
+        });
+        document.querySelector("#tbl_datos").innerHTML=s;
+    }
+    window.onload=cargaDatos();
+</script>
+</html>
