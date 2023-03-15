@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Mensajes</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
+
 <body>
     <div class="w3-container">
         <div class="w3-row">
@@ -36,27 +38,29 @@
     <!-- <input type="button" onclick="miFuncion()" value="llenar tabla"> -->
 </body>
 <script>
-    
-    function muestraDatosTxt(datostxt){
+
+    function muestraDatosTxt(datostxt) {
         console.log(datostxt);
     }
-    function callback1(data){
+    function callback1(data) {
         console.log(data);
-        if(data.ok){
+        if (data.ok) {
             console.log("respuesta del servidor ok");
+            // data.text() convierte los datos recibidos por el servidor en un formato de texto
             data.text()
-            .then(muestraDatosTxt);
-        }else{
+                .then(muestraDatosTxt);
+        } else {
             console.log("respuesta del servidor  no ok");
         }
     }
-    function leeJsonDesdeApiRest(){
-        let p=fetch("https://jsonplaceholder.typicode.com/posts");
+    function leeJsonDesdeApiRest() {
+        let p = fetch("https://jsonplaceholder.typicode.com/posts");
         console.log(p);
         p.then(callback1);
     }
-    window.onload=function(){
+    window.onload = function () {
         leeJsonDesdeApiRest();
     };
 </script>
+
 </html>

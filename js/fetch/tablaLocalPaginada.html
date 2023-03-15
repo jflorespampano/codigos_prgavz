@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <div id="divPag" class="w3-bar">
+            <a href="#" class="w3-button">1</a>
+            <a href="#" class="w3-button">2</a>
+            <a href="#" class="w3-button">3</a>
+            <a href="#" class="w3-button">4</a>
+            <a href="#" class="w3-button">5</a>
+        </div>
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <td>id</td>
+                    <td>nombre</td>
+                    <td>sexo</td>
+                </tr>
+            </thead>
+            <tbody id="tbl_datos">
+
+            </tbody>
+        </table>
+    </div>
+
+    <input type="button" onclick="ocultarSexo(2)" value="mostrar/ocultar sexo">
+    <input type="button" onclick="muestraMuejeres()" value="solo muejeres">
+    <input type="button" onclick="muestraTodos()" value="todos">
+</body>
+<script>
+    let Personas = {
+        pagActual: 1,
+        totalPaginas: 0,
+        datosXpagina: 7,
+        datos: []
+    }
+    let datos = [
+        { 'id': '01', 'nombre': 'juan', 'sexo': 'm' },
+        { 'id': '02', 'nombre': 'ana', 'sexo': 'f' },
+        { 'id': '03', 'nombre': 'rosa', 'sexo': 'f' },
+        { 'id': '04', 'nombre': 'pepe', 'sexo': 'm' },
+        { 'id': '05', 'nombre': 'jose', 'sexo': 'm' },
+        { 'id': '06', 'nombre': 'rocio', 'sexo': 'f' },
+        { 'id': '07', 'nombre': 'luis', 'sexo': 'm' },
+        { 'id': '08', 'nombre': 'juan', 'sexo': 'm' },
+        { 'id': '09', 'nombre': 'ana', 'sexo': 'f' },
+        { 'id': '10', 'nombre': 'rosa', 'sexo': 'f' },
+        { 'id': '11', 'nombre': 'pepe', 'sexo': 'm' },
+        { 'id': '12', 'nombre': 'jose', 'sexo': 'm' },
+        { 'id': '13', 'nombre': 'rocio', 'sexo': 'f' },
+        { 'id': '14', 'nombre': 'luis', 'sexo': 'm' },
+        { 'id': '15', 'nombre': 'juan', 'sexo': 'm' },
+        { 'id': '16', 'nombre': 'ana', 'sexo': 'f' },
+        { 'id': '17', 'nombre': 'rosa', 'sexo': 'f' },
+        { 'id': '18', 'nombre': 'pepe', 'sexo': 'm' },
+        { 'id': '19', 'nombre': 'jose', 'sexo': 'm' },
+        { 'id': '20', 'nombre': 'rocio', 'sexo': 'f' },
+        { 'id': '21', 'nombre': 'luis', 'sexo': 'm' },
+        { 'id': '22', 'nombre': 'juan', 'sexo': 'm' },
+        { 'id': '23', 'nombre': 'ana', 'sexo': 'f' },
+        { 'id': '24', 'nombre': 'rosa', 'sexo': 'f' },
+        { 'id': '25', 'nombre': 'pepe', 'sexo': 'm' },
+        { 'id': '26', 'nombre': 'jose', 'sexo': 'm' },
+        { 'id': '27', 'nombre': 'rocio', 'sexo': 'f' },
+        { 'id': '28', 'nombre': 'luis', 'sexo': 'm' },
+        { 'id': '29', 'nombre': 'rosa', 'sexo': 'f' },
+        { 'id': '30', 'nombre': 'pepe', 'sexo': 'm' },
+        { 'id': '31', 'nombre': 'jose', 'sexo': 'm' },
+        { 'id': '32', 'nombre': 'rocio', 'sexo': 'f' },
+        { 'id': '33', 'nombre': 'luis', 'sexo': 'm' },
+    ];
+    /***
+     * contiene los dtos a desplegar en la tabla
+     */
+    let dataDisplay = datos;
+    function paginate(array, page_size, page_number) {
+        //si iniciamos la página en 1, pero el arreglo inicia en 0
+        return array.slice((page_number - 1) * page_size, page_number * page_size);
+    }
+
+
+    /***
+     * Devuelve los datos de la página i
+     * @param {Array} datos - la lista de datos
+     * @param {Number} dxp - datos por pagina
+     * @param {Number} i - el número de página a desplegar
+     */
+    function cargaPagina(datos, dxp, i = 1) {
+        return paginate(datos, dxp, i);
+    }
+    //console.log(cargaPagina(datos, 2));
+    /***
+     * Carga en la tabla html los datos de la página actual del arreglo
+     * @param {Array} data -los datos a desplegar
+     */
+    function cargaDatosTabla(dataDisplay) {
+        let dt = cargaPagina(dataDisplay, Personas.datosXpagina, Personas.pagActual);
+        let s = "";
+        dt.forEach(element => {
+            s += "<tr>";
+            s += "<td>" + element.id + "</td>";
+            s += "<td>" + element.nombre + "</td>";
+            s += "<td>" + element.sexo + "</td>";
+            s += "</tr>"
+        });
+        document.querySelector("#tbl_datos").innerHTML = s;
+    }
+    /***
+     * Oculta el campo sexo
+     */
+    function ocultarSexo(iCol) {
+        let oTable = document.getElementById("tabla");
+        for (let i = 0; i < oTable.rows.length; i++) {
+            oTable.rows[i].cells[iCol].style.display = oTable.rows[i].cells[iCol].style.display == "none" ? "block" : "none";
+        }
+    }
+
+    function muestraMuejeres() {
+        let dataDisplay = datos.filter(x => x.sexo === 'f');
+        cargaDatosTabla(dataDisplay);
+    }
+    function muestraTodos() {
+        dataDisplay = datos;
+        cargaDatosTabla(dataDisplay);
+    }
+    // function siguiente() {
+    //     Personas.pagActual++;
+    //     cargaDatosTabla(dataDisplay);
+    // }
+    function ponerBotonesPaginacion(Personas) {
+        let s = '';
+        for (let i = 0; i < Personas.totalPaginas; i++) {
+            s += `
+                <a href="#" class="w3-button">${i + 1}</a>
+            `;
+            let btns = document.querySelector('#divPag');
+            btns.innerHTML = s;
+        }
+    }
+
+    function leerDatos() {
+        const myPromise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                //simularmos que vamos a buscar los datos al servidor
+                //y ejecutamos resolve mandando los datos locales
+                resolve(datos);
+            }, 300);
+        });
+        return myPromise;
+    }
+
+    window.onload = function () {
+        leerDatos().then((data) => {
+            Personas.datos = datos;
+            Personas.datosXpagina = 10;
+            Personas.totalPaginas = Math.round(Personas.datos.length / Personas.datosXpagina) + 0.5;
+            dataDisplay = Personas.datos;
+            ponerBotonesPaginacion(Personas);
+            cargaDatosTabla(dataDisplay);
+        }).catch((datos) => {
+
+        });
+
+        let d = document.querySelector("#divPag");
+        d.addEventListener('click', function (e) {
+            //console.log(e.target.innerText);
+            let x = e.target.innerText;
+            Personas.pagActual = x;
+            cargaDatosTabla(dataDisplay);
+        });
+    }
+
+</script>
+
+</html>

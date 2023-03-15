@@ -1,28 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <title>Document</title>
 </head>
+
 <body>
     <div id="app" class="w3-container">
-        <h1 v-if="datosCargados">Datos cargados!</h1>
-	    <h1 v-else>Oh no 😢</h1>
-        <div class="w3-row">
-            <div class="w3-col l4">
-                <p>{{ message }} {{ count }}</p>
-                <button @click="increment">{{ count }}</button>
 
-                <select v-model="estadoSeleccionado" id="docente">
-                    <option v-for="estado in estados" :value="estado.id">{{estado.nombre}}</option>
-                </select>
+        <div class="w3-row">
+            <div class="w3-col l4 w3-padding">
+                <div>
+                    <div class="w3-panel w3-blue w3-padding w3-center">
+                        Alta de Post
+                    </div>
+                    <form action="#" class="w3-container w3-border w3-padding">
+                        <label for="id">ID</label>
+                        <input type="text" class="w3-input" id="id" name="id" placeholder="id" v-model="post.id"><br>
+                        <label for="userId">User ID</label>
+                        <input type="text" class="w3-input" id="userId" name="userId" placeholder="userId"
+                            v-model="post.userId"><br>
+                        <label for="title">Title</label>
+                        <input type="text" class="w3-input" id="title" name="title" placeholder="title"
+                            v-model="post.title"><br>
+                        <input type="button" class="w3-button w3-blue" value="agregar" v-on:click="agregarPost">
+                    </form>
+                </div>
+                <div class="w3-container w3-padding">
+                    <!-- <h3 v-if="datosCargados">{{message}}</h3>
+                    <h3 v-else>Oh no {{message}} 😢</h3> -->
+                    <div v-if="datosCargados" class="w3-card-4" style="width:100%;">
+                        <header class="w3-container w3-blue">
+                            <h4>Mensaje</h4>
+                        </header>
+                        <div class="w3-container">
+                            <p>{{message}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="w3-col l8">
-                <p>mundo</p>
-                <button @click="datosCargados = !datosCargados">toggle</button>
-                <table>
+            <div class="w3-col l8 w3-padding">
+                <div class="w3-panel w3-blue w3-padding w3-center">
+                    Lista de Post
+                </div>
+                <table class="w3-table-all">
                     <thead>
                         <td>user id</td>
                         <td>id</td>
@@ -41,4 +65,5 @@
     </div>
 </body>
 <script src="main.js"></script>
+
 </html>

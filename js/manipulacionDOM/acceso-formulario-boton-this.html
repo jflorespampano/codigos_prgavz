@@ -39,6 +39,10 @@
         let nid = frm.elements.id.value;
         let nnombre = frm.elements.nombre.value;
         console.log("por nombre: "+nid+","+nnombre);
+        //mostrar los elementos del formulario y su atributo value
+        for(let x of frm.elements){
+            console.log("elem: ",x," value=",x.value)
+        }
     }
     window.onload=function(){
         

@@ -1,67 +1,76 @@
 <script>
     //persona
-    let persona={
-        "id":"01",
-        "nombre":"ana",
-        "empleo":"plomero"
+    let persona = {
+        "id": "01",
+        "nombre": "ana",
+        "empleo": "plomero"
     };
     //mostrando valor de un json
     console.log("mostrando atributos de un json");
-    console.log("sintaxis 1: "+persona.nombre);
+    console.log("sintaxis 1: " + persona.nombre);
     //o con esta sintaxis
-    console.log("sintaxis 2: "+persona['nombre']);
+    console.log("sintaxis 2: " + persona['nombre']);
     //json de json
+    console.log('\nIterando objetos:');
     let json = {
-        "0":{
-            "id":"01",
-            "nombre":"ana",
-            "empleo":"plomero"
+        "persona 0": {
+            "id": "01",
+            "nombre": "ana",
+            "empleo": "plomero"
         },
-        "1":{
-            "id":"01",
-            "nombre":"rosa",
-            "empleo":"alabañil"
+        "persona 1": {
+            "id": "01",
+            "nombre": "rosa",
+            "empleo": "alabañil"
         },
-        "2":{
-            "id":"01",
-            "nombre":"luis",
-            "empleo":"plomero"
+        "persona 2": {
+            "id": "01",
+            "nombre": "luis",
+            "empleo": "plomero"
         }
     };
-    //recorrer un dato json anidado:
-    s="";
-    for (let i in json) {
-        if(json[i].hasOwnProperty("nombre")){
-            s+=json[i].nombre+",";
+    //for in opera sobre las propiedades enumerables de un objeto, por ejemplo un object o un array
+    //for in no se deberia usar en arrgelos donde importe el orden de los elementos, su uso se recomiendo
+    //en objeto como: {clave:valor, clave:valor, ...}
+    s = "";
+    for (let elemento in json) {
+        console.log(`elemento: ${elemento}`);
+        let persona = json[elemento];
+        for (atributo in persona) {
+            console.log(` datos de ${elemento}: persona.${atributo} = ${persona[atributo]}`);
         }
-    };
-    console.log("recorriendo elementos de un arreglo json");
-    console.log("la cadena trae ->"+s);
+    }
+
+    console.log("\nRecorriendo elementos de un arreglo con forEach");
     //arreglo de json
     let arrjson = [
         {
-            "id":"01",
-            "nombre":"ana",
-            "empleo":"plomero"
+            "id": "01",
+            "nombre": "ana",
+            "empleo": "plomero"
         },
         {
-            "id":"01",
-            "nombre":"rosa",
-            "empleo":"alabañil"
+            "id": "01",
+            "nombre": "rosa",
+            "empleo": "alabañil"
         },
         {
-            "id":"01",
-            "nombre":"luis",
-            "empleo":"plomero"
+            "id": "01",
+            "nombre": "luis",
+            "empleo": "plomero"
         }
     ];
     //recorrer un arreglo json
-    console.log("recorriendo el [] json");
-    arrjson.forEach(function(e){
-        console.log(e.empleo);
+    console.log("recorriendo el [] sin indice");
+    arrjson.forEach(function (e) {
+        console.log(e.nombre, 'trabaja como:', e.empleo);
     });
-    console.log("json con indice");
-    arrjson.forEach(function(item, index){
-        console.log("indice " + index + " " + item.empleo );
+    console.log("recorriendo el [] con indice");
+    arrjson.forEach(function (item, index) {
+        console.log('el empleado:', item.nombre, 'en la posicion ', index, 'trabaja en:', item.empleo);
     });
+    console.log("\nRecorriendo elementos de un arreglo con for of");
+    for (e of arrjson) {
+        console.log(e.nombre, 'es:', e.empleo);
+    }
 </script>
