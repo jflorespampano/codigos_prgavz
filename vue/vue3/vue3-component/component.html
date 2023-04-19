@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>componentes</title>
+</head>
+
+<body>
+    <div id="app" class="w3-content">
+        <test :persona="persona" />
+    </div>
+</body>
+<script>
+    const component1 = {
+        template: `
+            <div class="w3-card w3-padding">
+                <h3> {{ titulo }} </h3>
+                <p>{{ persona.nombre }}</p>
+                <p>{{ persona.sexo }}</p>
+            </div>
+        `,
+        props: ['persona'],
+        data: () => {
+            return {
+                titulo: 'datos de la persona'
+            }
+        }
+    }
+
+
+    const app = Vue.createApp({
+        data: () => {
+            return {
+                persona: {
+                    nombre: 'ana pacheco',
+                    sexo: 'f'
+                }
+            }
+        }
+    });
+    app.component('test', component1)
+    app.mount('#app')
+
+</script>
+
+</html>

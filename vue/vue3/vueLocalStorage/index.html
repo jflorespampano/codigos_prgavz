@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+
+<body>
+    <div id="app" class="w3-container w3-row">
+        <div class="w3-panel w3-col s4">
+            <h3 class="w3-card">
+                btnUpdate
+            </h3>
+            <form ref="userForm" v-on:submit="processUser" class="w3-card w3-padding">
+                <label for="id">id</label>
+                <input type="text" id="id" name="id" v-model="user.id" class="w3-input w3-border" placeholder="id"
+                    :disabled="editIdDesctivado">
+                <label for="name">name</label>
+                <input type="text" ref="name" v-model="user.name" id="name" name="name" class="w3-input w3-border"
+                    placeholder="name">
+                <label for="username">user name</label>
+                <input type="text" v-model="user.username" id="username" name="username" class="w3-input w3-border"
+                    placeholder="user name"><br>
+                <label for="email">email</label>
+                <input type="text" v-model="user.email" id="email" name="email" class="w3-input w3-border"
+                    placeholder="email"><br>
+                <input type="submit" class="w3-button w3-blue" v-bind:value="operation">
+                <p>{{procesamientos}}</p>
+            </form>
+        </div>
+        <div class="w3-panel w3-col s8">
+            <h3 class="w3-card">
+                datos
+            </h3>
+            <div id="midiv" class="w3-card">
+                <table class="w3-table-all">
+                    <thead>
+                        <tr>
+                            <td>id</td>
+                            <td>name</td>
+                            <td>userName</td>
+                            <td>email</td>
+                            <td>adress</td>
+                            <td colspan="2">options</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tableData">
+                        <tr v-for="(item,index) in users">
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.username}}</td>
+                            <td>{{item.email}}</td>
+                            <td>
+                                <ul>
+                                    <li>{{item.address.street}}</li>
+                                    <li>{{item.address.city}}</li>
+                                </ul>
+                            </td>
+                            <td><button @click="editUser(item.id, $event)" class="w3-button w3-blue"
+                                    id="btnUpdate">update</button></td>
+                            <td><button @click="deleteUser(item.id, $event)" class="w3-button w3-red"
+                                    id="btnDelete">delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    //ver: https://www.youtube.com/watch?v=XW9M7enLAM4&list=PLExyZ7hD-J5bigoqeZq1G_AfD4K4cWPn8&index=68&t=1012s
+    window.addEventListener('load', () => {
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    users: [],
+                    user: {
+                        id: '',
+                        name: '',
+                        username: '',
+                        email: ''
+                    },
+                    operation: 'register',
+                    userIndex: -1,
+                    editIdDesctivado: true,
+                    numProcesamientos: 0
+                }
+            },
+            created() {
+                if (localStorage.getItem('vue3.users') !== null) {
+                    this.users = JSON.parse(localStorage.getItem('vue3.users'));
+                } else {
+                    this.listUsers();
+                }
+            },
+            mounted() {
+                this.$refs.name.focus();
+            },
+            methods: {
+                listUsers: async function () {
+                    const res = await fetch('https://jsonplaceholder.typicode.com/users');
+                    const data = await res.json();
+                    this.users = data.slice(0, 5)
+                    this.updateLocalStorage();
+                },
+                updateLocalStorage: function () {
+                    localStorage.setItem('vue3.users', JSON.stringify(this.users));
+                },
+                processUser: function (event) {
+                    event.preventDefault();
+                    if (this.operation === 'register') {
+                        this.user.id = this.findMaxId() + 1;
+                        this.users.push(
+                            {
+                                id: this.user.id,
+                                name: this.user.name,
+                                username: this.user.username
+                            }
+                        );
+                    } else {
+                        this.users[this.userIndex].id = this.user.id;
+                        this.users[this.userIndex].name = this.user.name;
+                        this.users[this.userIndex].username = this.user.username;
+                    }
+                    this.updateLocalStorage();
+                    this.clearFields();
+                    this.operation = 'register';
+                    this.numProcesamientos++;
+                },
+                findMaxId: function () {
+                    const maxId = Math.max.apply(Math, this.users.map(function (user) {
+                        return user.id;
+                    }));
+                    return maxId;
+                },
+                editUser: function (id, event) {
+                    this.operation = 'update';
+                    const userFound = this.users.find((user, index) => {
+                        this.userIndex = index;
+                        return user.id === id;
+                    });
+                    this.user.id = userFound.id;
+                    this.user.name = userFound.name;
+                    this.user.username = userFound.username;
+                },
+                deleteUser: function (id, event) {
+                    const confirmation = confirm(`Quieres eliminar el usuario ${id}?`);
+                    if (confirmation) {
+                        this.users = this.users.filter(user => user.id !== id)
+                        this.updateLocalStorage();
+                    } else {
+                        event.preventDefault();
+                    }
+                },
+                clearFields: function () {
+                    this.user.id = '';
+                    this.user.name = '';
+                    this.user.username = '';
+                    this.$refs.name.focus();
+                    this.userIndex = -1;
+                }
+            },
+            computed: {
+                procesamientos: function () {
+                    return this.numProcesamientos;
+                }
+            }
+        }).mount('#app');
+    });
+</script>
+
+</html>

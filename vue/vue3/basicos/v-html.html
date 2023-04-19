@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>vue</title>
+</head>
+
+<body>
+    <div id="app">
+        {{mensaje}}
+        <br>
+        {{midiv}}
+        <br>
+        <div v-html="midiv"></div>
+        <input type="text" id="uno" name="uno" :disabled="ponerDisable"><br>
+        <input type="text" id="dos" name="dos" :disabled="ponerDisable"><br>
+        <input type="button" :disabled="ponerDisable" value="hacer clic">
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        app = Vue.createApp({
+            data() {
+                return {
+                    mensaje: 'mas sencilla',
+                    midiv: `
+                        <ul>
+                            <li>uno</li>
+                            <li>dos</li>
+                        </ul>
+                    `,
+                    ponerDisable: false
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

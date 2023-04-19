@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Vue prof y alumnos</title>
+</head>
+
+<body>
+    <div id="app" class="w3-container w3-padding">
+        <div v-bind:style="styleObject">{{mensaje}}</div>
+        <span v-html="miHtml"></span>
+        <div class="w3-row w3-padding">
+            <div class="w3-col l4">
+                <div class="w3-card w3-padding">
+                    <form action="" xlass="w3-padding">
+                        <label for="">Id</label>
+                        <input class="w3-input w3-border w3-light-grey" type="text" v-model="alumno.id">
+                        <label for="">Nombre</label>
+                        <input class="w3-input w3-border w3-light-grey" type="text" v-model="alumno.nombre">
+                        <label for="">Edad</label>
+                        <input class="w3-input w3-border w3-light-grey" type="number" v-model.number="alumno.edad"
+                            placeholder="edad">
+                        <fieldset>
+                            <legend>sexo</legend>
+                            <input type="radio" id="hombre" value="h" v-model="alumno.sexo">
+                            <label for="hombre">hombre</label>
+                            <input type="radio" id="mujer" value="f" v-model="alumno.sexo">
+                            <label for="mujer">mujer</label>
+                        </fieldset>
+                        <fieldset id='lenguajes'>
+                            <legend>Lenguajes</legend>
+                            <p>
+                                <input type="checkbox" class="w3-check" id="c" value="c" v-model="alumno.lenguajes">
+                                <label for="c">C</label>
+                            </p>
+                            <p>
+                                <input class="w3-check" type="checkbox" id="cpp" value="cpp" v-model="alumno.lenguajes">
+                                <label for="cpp">C++</label>
+                            </p>
+                            <p>
+                                <input class="w3-check" type="checkbox" id="python" value="python"
+                                    v-model="alumno.lenguajes">
+                                <label for="python">Python</label>
+                            </p>
+                            <br>
+                            <span>Checked names: {{ alumno.lenguajes }}</span>
+                        </fieldset>
+                        <label for="cmbCarrera">Carrera:</label>
+                        <select id="cmbCarrera" class="w3-select" v-model="alumno.carrera">
+                            <option disabled value="">Seleccione Carrera</option>
+                            <option value="li">Licenciatura en oinfrormatica</option>
+                            <option value="isc">ingenieria en sistemas</option>
+                            <option value="ico">ingenieria en computacion</option>
+                        </select>
+                        <span>Seleccionado: {{ alumno.carrera }}</span>
+                    </form>
+                </div>
+
+            </div>
+            <div class="w3-col l8">
+                <div class="w3-container w3-padding">
+                    <input type="button" v-on:click="cargaProfesores" value="Profesores">
+                    <input type="button" @click="cargaAlumnos" value="Alumnos">
+                    <table v-bind:class="classTable">
+                        <thead>
+                            <tr v-if="tituloAzul" class="w3-blue">
+                                <td v-for="title in data.titles">{{title}}</td>
+                            </tr>
+                            <tr v-else class="w3-red">
+                                <td v-for="title in data.titles">{{title}}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="dato in data.datos" :key="dato.id">
+                                <td>{{dato.id}}</td>
+                                <td>{{dato.nombre}}</td>
+                                <td>{{dato.edad}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const alumnos = {
+        titles: ['ID', 'ALUMNOS', 'EDAD'],
+        datos: [
+            { id: 1, nombre: 'juan', edad: 27 },
+            { id: 2, nombre: 'luis', edad: 26 },
+            { id: 3, nombre: 'paco', edad: 24 },
+            { id: 4, nombre: 'rosa', edad: 21 },
+            { id: 5, nombre: 'ana', edad: 23 },
+            { id: 6, nombre: 'pedro', edad: 23 }
+        ]
+    };
+    const profesores = {
+        titles: ['ID', 'PROFESORES', 'EDAD'],
+        datos: [
+            { id: 1, nombre: 'Rosario', edad: 37 },
+            { id: 2, nombre: 'Juan C', edad: 46 },
+            { id: 3, nombre: 'Gelipe', edad: 54 },
+            { id: 4, nombre: 'Fernando', edad: 31 },
+            { id: 5, nombre: 'Canepa', edad: 53 },
+            { id: 6, nombre: 'Judith', edad: 63 }
+        ]
+    };
+    var app = new Vue({
+        el: '#app',
+        data: {
+            data: [],
+            mensaje: '',
+            alumno: {
+                id: 1,
+                nombre: 'juana maria',
+                sexo: 'f',
+                lenguajes: ['c', 'cpp', 'python'],
+                carrera: 'li',
+                edad: 0
+            },
+            styleObject: {
+                color: 'red',
+                fontSize: '32px'
+            },
+            classTable: {
+                'w3-table': true,
+                'w3-border': true,
+                'w3-centered': true,
+                'w3-striped': true
+
+            },
+            tituloAzul: true,
+
+            miHtml: `
+                <div class="w3-card w3-padding">    
+                <p>Ejemplo aplicacion Vue  <strong>ligado/enlace</strong> de datos.</p>
+                </div>
+            `
+
+        },
+        methods: {
+            saludo: function (event) {
+                this.mensaje = "adios";
+            },
+            cargaProfesores: function () {
+                this.data = profesores;
+                this.tituloAzul = false;
+            },
+            cargaAlumnos: function () {
+                this.data = alumnos;
+                this.tituloAzul = true;
+            }
+        },
+        mounted() {
+            this.mensaje = "Aplicacion Vue";
+            this.data = alumnos;
+        }
+    });
+</script>
+
+</html>

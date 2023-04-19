@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <div id="app">
+        <tabla-dinamica v-bind:data="personas" v-on:remove="eliminarPersonas" v-on:update="actualizaPersonas">
+        </tabla-dinamica>
+        <tabla-dinamica v-bind:data=" articulos" v-on:remove="eliminarArticulos" v-on:update="actualizaArticulos">
+        </tabla-dinamica>
+
+    </div>
+
+</body>
+<script>
+    Vue.component('tabla-dinamica', {
+        emits: ['remove', 'update'],
+        props: ['data'],
+        template: `
+            <div class="tabla-dinamica w3-panel w3-border w3-border-blue">
+                <h3>{{data.titulo}}</h3>
+                <table class="w3-table-all">
+                    <thead>
+                        <tr class="w3-blue">
+                            <td v-for="encabezado in data.encabezados">
+                                {{encabezado}}
+                            </td>
+                            <td colspan="2">options</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="dato in data.datos">
+                            <!--vue permite iterar tambien sobre objetos-->
+                            <!--otra opcion sería usar Object.values que devuelve un array-->
+                            <!--con los valores del objeto y sobre el ya iterar-->
+                            <td v-for="valor in dato">{{valor}}</td>
+                            <td><button v-on:click="$emit('update', dato)" class="w3-button w3-blue"
+                                    id="btnUpdate">update</button></td>
+                            <td><button v-on:click="$emit('remove', dato)" class="w3-button w3-red"
+                                    id="btnDelete">delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `
+    })
+
+    //<td v-for="valor in valores_campos(dato)">{{valor}}</td>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            personas: {
+                titulo: "Personas",
+                encabezados: ["Id", "Nombre", "Sexo", "Edad"],
+                datos: [
+                    { id: 0, nombre: "juan", sexo: "m", edad: 23 },
+                    { id: 1, nombre: "luis", sexo: "m", edad: 21 },
+                    { id: 2, nombre: "paco", sexo: "m", edad: 24 },
+                    { id: 3, nombre: "ana", sexo: "m", edad: 25 },
+                    { id: 4, nombre: "pedro", sexo: "m", edad: 26 },
+                    { id: 5, nombre: "jose", sexo: "m", edad: 27 },
+                    { id: 6, nombre: "jacinto", sexo: "m", edad: 28 },
+                    { id: 7, nombre: "rosa", sexo: "m", edad: 29 },
+                    { id: 8, nombre: "pablo", sexo: "m", edad: 20 }
+                ]
+
+            },
+            articulos: {
+                titulo: "Articulos de almacen",
+                encabezados: ["id", "descripcion", "stock", "maximo"],
+                datos: [
+                    { id: 0, descripcion: "libreta blanca", stock: 20, maximo: 300 },
+                    { id: 1, descripcion: "libreta rayas", stock: 20, maximo: 300 },
+                    { id: 2, descripcion: "libreta cuadro grande", stock: 10, maximo: 300 },
+                    { id: 3, descripcion: "lapiz #2", stock: 20, maximo: 500 }
+                ]
+
+            }
+        },
+        // data: function () {
+        //     return {
+        //         personas: {
+        //             titulo: "Personas",
+        //             encabezados: ["Id", "Nombre", "Sexo", "Edad"],
+        //             datos: [
+        //                 { id: 0, nombre: "juan", sexo: "m", edad: 23 },
+        //                 { id: 1, nombre: "luis", sexo: "m", edad: 21 },
+        //                 { id: 2, nombre: "paco", sexo: "m", edad: 24 },
+        //                 { id: 3, nombre: "ana", sexo: "m", edad: 25 },
+        //                 { id: 4, nombre: "pedro", sexo: "m", edad: 26 },
+        //                 { id: 5, nombre: "jose", sexo: "m", edad: 27 },
+        //                 { id: 6, nombre: "jacinto", sexo: "m", edad: 28 },
+        //                 { id: 7, nombre: "rosa", sexo: "m", edad: 29 },
+        //                 { id: 8, nombre: "pablo", sexo: "m", edad: 20 }
+        //             ]
+
+        //         },
+        //         articulos: {
+        //             titulo: "Articulos de almacen",
+        //             encabezados: ["id", "descripcion", "stock", "maximo"],
+        //             datos: [
+        //                 { id: 0, descripcion: "libreta blanca", stock: 20, maximo: 300 },
+        //                 { id: 1, descripcion: "libreta rayas", stock: 20, maximo: 300 },
+        //                 { id: 2, descripcion: "libreta cuadro grande", stock: 10, maximo: 300 },
+        //                 { id: 3, descripcion: "lapiz #2", stock: 20, maximo: 500 }
+        //             ]
+
+        //         }
+        //     }
+        // },
+        methods: {
+            eliminarArticulos: function (dato) {
+                console.log('Elimnina Articulos : ' + ' dato con id:' + JSON.stringify(dato));
+            },
+            actualizaArticulos: function (dato) {
+                console.log('en actualiza articulos ' + JSON.stringify(dato));
+            },
+            eliminarPersonas: function (dato) {
+                console.log('Elimina Personas : ' + ' dato con id:' + JSON.stringify(dato));
+            },
+            actualizaPersonas: function (dato) {
+                console.log('en actualiza personas ' + JSON.stringify(dato));
+                console.log(Object.keys(app.personas.datos[0]));
+                console.log(Object.keys(this.personas.datos[0]));
+            }
+
+        },
+        mounted: function () {
+            //obtener los encabezados de los objetos persona 
+            console.log(Object.keys(this.personas.datos[0]));
+            //no funciona para poner los encabezados por que no retorna necesariamente los keys en orden
+            //this.personas.encabezados = Object.keys(this.personas.datos[0]);
+            this.$nextTick(() => {
+                console.log('ya reenderizo todo y esta disponible app: ', Object.keys(app.personas.datos[0]));
+            });
+        }
+    })
+
+</script>
+
+</html>

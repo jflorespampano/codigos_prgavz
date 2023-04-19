@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <div id="app" class="w3-content">
+        <blog-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></blog-post>
+    </div>
+</body>
+<script>
+    Vue.component('blog-post', {
+        props: ['post'],
+        template: `
+            <div class="blog-post w3-panel w3-border w3-border-blue">
+                <h3>{{post.title}}</h3>
+                <div class="w3-card w3-padding" v-html="post.body"></div>
+                <div class="w3-panel">
+                    <h4>comentarios</h4>
+                    <div class="w3-card" v-for="com in post.comments">
+                        <p>{{com}}</p>
+                    </div>
+                </div>
+                
+            </div>
+        `
+    })
+    new Vue({
+        el: '#app',
+        data: {
+            posts: [
+                {
+                    id: 1,
+                    title: 'post 1',
+                    body: 'cuerpo del post #1',
+                    autor: 'jflores',
+                    comments: ['comentario 11', 'comentario 12']
+                },
+                {
+                    id: 2,
+                    title: 'post 2',
+                    body: 'cuerpo del post #2',
+                    autor: 'jflores',
+                    comments: ['comentario 21', 'comentario 22']
+                },
+                {
+                    id: 3,
+                    title: 'post 3',
+                    body: 'cuerpo del post #3',
+                    autor: 'jflores',
+                    comments: ['comentario 31', 'comentario 32']
+                },
+                {
+                    id: 4,
+                    title: 'post 4',
+                    body: 'cuerpo del post #4',
+                    autor: 'jflores',
+                    comments: ['comentario 41', 'comentario 42']
+                },
+                {
+                    id: 5,
+                    title: 'post 5',
+                    body: 'cuerpo del post #5',
+                    autor: 'jflores',
+                    comments: ['comentario 51', 'comentario 52']
+                },
+            ]
+        }
+    })
+</script>
+
+</html>

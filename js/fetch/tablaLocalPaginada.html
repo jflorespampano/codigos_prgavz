@@ -171,9 +171,11 @@
         let d = document.querySelector("#divPag");
         d.addEventListener('click', function (e) {
             //console.log(e.target.innerText);
-            let x = e.target.innerText;
-            Personas.pagActual = x;
-            cargaDatosTabla(dataDisplay);
+            if (e.target.tagName === 'A') {
+                let x = e.target.innerText;
+                Personas.pagActual = x;
+                cargaDatosTabla(dataDisplay);
+            }
         });
     }
 

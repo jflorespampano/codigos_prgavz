@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+    <style>
+        .red {
+            color: red;
+        }
+
+        .letraGrande {
+            font-Size: 35px
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div v-bind:style="styleObject">hola mundo!</div>
+        <div v-bind:class="[redClass, letraGrande]">hola mundo!</div>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: function () {
+            return {
+                styleObject: {
+                    color: 'blue',
+                    fontSize: '35px'
+                },
+                redClass: 'red',
+                letraGrande: 'letraGrande'
+            }
+        }
+    });
+</script>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Vue typicode</title>
+</head>
+
+<body>
+    <div id="app" class="w3-container">
+        <div class="w3-container w3-row">
+            <div class="w3-col l4">
+                <h3>Formulario</h3>
+            </div>
+            <div class="w3-col l8">
+                <h3>tabla</h3>
+                <input type="button" class="w3-button w3-blue" value="<" @click="anteriorPagina">
+                <input type="button" class="w3-button w3-blue" value=">" @click="siguientePagina">
+                <table class="w3-table-all">
+                    <thead>
+                        <tr>
+                            <td v-for="(titulo, index) in todos.titulos" v:key="index">
+                                {{titulo}}
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(dato,index) in todos.datos" v:key="index">
+                            <td>{{dato.id}}</td>
+                            <td>{{dato.userId}}</td>
+                            <td>{{dato.title}}</td>
+                            <td>
+                                <input v-model="dato.completed" type="checkbox">
+                                <!-- <input v-if="dato.completed" type="checkbox" checked>
+                                <input v-else type="checkbox"> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var misDatos = [];
+    var app = new Vue({
+        el: "#app",
+        data: function () {
+            return {
+                pagina: 0,
+                renglonesXpagina: 15,
+                todos: {
+                    titulos: ['#tarea', '#usuario', 'tarea', 'completada?'],
+                    datos: [
+                        {
+                            "userId": 1,
+                            "id": 1,
+                            "title": "delectus aut autem",
+                            "completed": false
+                        }
+                    ]
+                }
+            }
+        },
+        methods: {
+            siguientePagina: function () {
+                if (app.pagina < (misDatos.length / app.renglonesXpagina) - 1) {
+                    // app.pagina++;
+                    this.pagina++;
+                } else {
+                    app.pagina = 0;
+                }
+                let ip = app.pagina * app.renglonesXpagina;
+                app.todos.datos = misDatos.slice(ip, ip + app.renglonesXpagina);
+            },
+            anteriorPagina: function () {
+                if (app.pagina > 0) {
+                    app.pagina--;
+                    let ip = app.pagina * app.renglonesXpagina;
+                    app.todos.datos = misDatos.slice(ip, ip + app.renglonesXpagina);
+                }
+
+            }
+        },
+        mounted: function () {
+            // alert("hola mundo");
+            fetch('https://jsonplaceholder.typicode.com/todos')
+                .then(function (data) {
+                    if (data.ok) {
+                        data.json()
+                            .then(function (datosjson) {
+                                // console.log(datosjson);
+                                misDatos = datosjson;
+                                let ip = app.pagina * app.renglonesXpagina;
+                                app.todos.datos = misDatos.slice(ip, ip + app.renglonesXpagina);
+                            });
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    });
+</script>
+
+</html>
