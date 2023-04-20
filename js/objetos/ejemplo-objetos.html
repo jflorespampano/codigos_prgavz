@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>objetos</title>
+</head>
+<body>
+    <div id="mi_div"></div>
+</body>
+    <script>
+        //creamos el prototipo del objeto
+        let Persona={
+            id:1,
+            nombre:"ana uc",
+            muestra: function(){
+                return `<h4>id:${this.id} nombre:${this.nombre}</h4>`;
+            }
+        }
+        window.onload=function(){
+            //creamos otro objetocon prototipo
+            p2=Object.create(Persona);
+            p2.id=2;
+            let mip="nombre";
+            p2[mip]="juan";
+            //mostramos el objeto original
+            document.getElementById("mi_div").innerHTML=Persona.muestra();
+            //mostramos el otro objeto
+            let nuevoDiv=document.createElement("div");
+            nuevoDiv.innerHTML=p2.muestra();
+            document.body.appendChild(nuevoDiv);
+            //creando objeto con constructor
+            let auto=new Auto("vw","jetta",p2);
+            //
+            let otroDiv=document.createElement("div");
+            otroDiv.innerHTML=auto.muestra();
+            document.body.appendChild(otroDiv);
+        }
+        //creando objeto con funcion constructora
+        function Auto(marca,modelo,propietario){
+            this.marca=marca;
+            this.modelo=modelo;
+            this.propietario=propietario;
+            this.muestra=function(){
+                return `<h4>Auto marca:${this.marca} modelo:${this.modelo}
+                propietario:${this.propietario.nombre}</h4>`;
+            }
+        }
+
+    </script>
+</html>

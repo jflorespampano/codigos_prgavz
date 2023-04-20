@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Alta tipo partes</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <div class="w3-content">
+        <div class="w3-card w3-padding" action="#">
+            <form id="frmAltaTipoParte">
+                <label for="id" class="w3-input">ID</label>
+                <input type="text" id="id" name="id" class="w3-input">
+                <label for="descripcion" class="w3-input">Descripcion</label>
+                <input type="text" id="descripcion" name="descripcion" class="w3-input"><br>
+                <input type="submit" id="btnEnviar" class="w3-button w3-blue" value="Agregar tipo parte">
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    document.querySelector("#frmAltaTipoParte").addEventListener('submit', function (evt) {
+        evt.preventDefault();
+        console.log("hola")
+        fetch('recibe_Formulario_Post.php', {
+            method: 'post',
+            body: new FormData(document.getElementById('frmAltaTipoParte'))
+        }).then(function (returnedValue) {
+            if (returnedValue.ok) {
+                console.log("operacion correcta");
+                returnedValue.text().then((txt) => {
+                    console.log('muestro respuesta: ', txt);
+                    document.write('recibo de regreso: ', txt);
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+
+    })
+
+</script>
+
+</html>
