@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>prov-par</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body class="w3-padding">
+    <div class="w3-bar w3-light-grey">
+        <a href="#" class="w3-bar-item w3-button" onclick="crearBasedeDatos()">Crear base de datos</a>
+    </div>
+    <div id="modal">
+        <div id="id01" class="w3-modal">
+            <div class="w3-modal-content">
+                <div class="w3-container">
+                    <div class="w3-panel w3-red w3-padding" >
+                        <h3>Danger!</h3>
+                        <p>Como resultado de esta operacion, Los datos se pueden perder o duplicar si la BD ya existe</p>
+                        <span onclick="ejecutarCreacionDB()" class="w3-button w3-green">proceder</span>
+                        <span onclick="document.getElementById('id01').style.display='none'" 
+                            class="w3-button w3-yellow">cancelar</span>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="App" class="w3-container w3-row">
+        <div class="w3-col m4 w3-padding">
+            <div class="w3-panel w3-card w3-grey"><p class="w3-dark-grey w3-padding">Alta</p></div>
+            <form id="frm_alta_parte" class="w3-container">
+                <p>
+                <input name="id" class="w3-input" type="text" placeholder="id" disabled></p>
+                <p>
+                <input name="nombre" class="w3-input" type="text" placeholder="nombre de la parte"></p>
+                <p>
+                <input name="anio" class="w3-input" type="text" placeholder="año de entrada al almacen"></p>
+                <p>
+                <input name="costo" class="w3-input" type="text" placeholder="costo de venta"></p>
+                <p>
+                <input id="btn_agregar" type="button" class="w3-button w3-white w3-border w3-border-blue" value="Agregar parte"></p>
+            </form>
+        </div>
+        <div class="w3-col m8  w3-padding">
+            <div class="w3-panel w3-card w3-grey"><p class="w3-dark-grey w3-padding">Lista</p></div>
+            <div id="mi_div" class="w3-panel w3-card w3-padding-16">
+                <table class="w3-table-all">
+                    <thead>
+                        <tr class="w3-grey">
+                            <td>ID</td>
+                            <td>Nombre</td>
+                            <td>Año</td>
+                            <td>Costo</td>
+                        </tr>
+                    </thead>
+                    <tbody id="datos_tabla"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function ejecutarCreacionDB(){
+        document.getElementById('id01').style.display='none';
+        //crear la base de datos y poblar las tablas.
+        fetch('./php/creaDataBase.php',)
+        .then(function(returnedValue) {
+            if(returnedValue.ok){
+                console.log("base de datos creada correctamente");
+            }
+        }).catch(function(err) {
+            console.log(err);
+        });
+    }
+    function crearBasedeDatos(){
+        //enviar advertencia
+        document.getElementById('id01').style.display='block';
+    }
+    function ponMensaje(mensaje,tiempo){
+        const div = document.createElement("div");
+            div.className = `w3-panel w3-card w3-blue w3-padding`;
+            div.appendChild(document.createTextNode(mensaje));
+            const container = document.querySelector("body");
+            const app = document.querySelector("#App");
+            container.insertBefore(div, app);
+            setTimeout(function () {
+                div.remove();
+        }, tiempo*1000);
+    }
+    function consultaPartes(){
+        fetch("./php/consultaPartes.php")
+        .then(function(data){
+            //console.log(data);
+            if(data.ok){
+                data.json().then((dataJ)=>{
+                    let s=``;
+                    dataJ.forEach(e => {
+                        s+=`<tr>
+                            <td>${e.id}</td><td>${e.nombre}</td>
+                            <td>${e.anio}</td><td>${e.costo}</td>
+                        </tr>`;
+                    });
+                    document.getElementById("datos_tabla").innerHTML=s;
+                    //
+                    ponMensaje("Datos actualizados OK. ", 3);
+                });
+            }else{
+                data.text().then((txt)=>{
+                    console.log('muestro error: ', txt);        
+                });
+                return [];
+            }
+        });
+    }
+    function verificaDatos(){
+        const data = new FormData(document.getElementById('frm_alta_parte'));
+        let s="";
+        if(data.get('nombre').length<=3){
+            s+="el nombre debe ser mayor de 3 caracteres;"
+        }
+        if(data.get('anio')<2000){
+            s+="el año debe ser mayor a 2000;"
+        }
+        if(data.get('costo')<=0){
+            s+="el costo debe ser mayor a 0;"
+        }
+        if(s.length>0){
+            ponMensaje(s, 6);
+            return false;
+        }
+        return true;
+
+    }
+    window.onload=function(){
+        consultaPartes();
+        const boton=document.querySelector("#btn_agregar");
+        boton.addEventListener("click",function(){
+            if(verificaDatos()){
+                fetch('./php/insertaParte.php', {
+                    method: 'post',
+                    body: new FormData(document.getElementById('frm_alta_parte'))
+                }).then(function(returnedValue) {
+                    if(returnedValue.ok){
+                        console.log("operacion correcta");
+                        returnedValue.text().then((txt)=>{
+                            console.log('muestro respuesta del servidor: ', txt);
+                            consultaPartes();
+                            ponMensaje(txt,3);
+                        });
+                    }
+                }).catch(function(err) {
+                    console.log(err);
+                });
+            }
+        })
+    }
+</script>
+</html>

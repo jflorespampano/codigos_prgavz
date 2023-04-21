@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ES-mx">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>v-model</title>
+</head>
+
+<body>
+    <div id="app" class="w3-container w3-padding" style="display:flex">
+        <div class="w3-card">
+            <h3 class="w3-card w3-padding">
+                altas
+            </h3>
+            <!-- v-on:submit.prevent="precessUser" enlaza el evento submit del formulario a la funcion processUser
+            y la opcion prevent aplica un preventdefault -->
+            <form ref="userForm" v-on:submit.prevent="processUser" class="w3-card w3-padding">
+                <label for="id">id</label>
+                <!-- :disabled="valorBoleano" deaactiva este control en dependencia del valor booleano -->
+                <input type="text" id="id" name="id" v-model="user.id" class="w3-input w3-border" placeholder="id"
+                    :disabled="editIdDesctivado">
+                <label for="name">name</label>
+                <!-- v-model:"user.name" liga de forma bidireccional el atributo value de este control 
+                    al campo user.name de los datos de vue, bidireccional quiere decir que al cambiar uno
+                se cambia el otro y veceversa -->
+                <input type="text" ref="name" v-model="user.name" id="name" name="name" class="w3-input w3-border"
+                    placeholder="name">
+                <label for="username">user name</label>
+                <input type="text" v-model="user.username" id="username" name="username" class="w3-input w3-border"
+                    placeholder="user name"><br>
+                <label for="email">email</label>
+                <input type="text" v-model="user.email" id="email" name="email" class="w3-input w3-border"
+                    placeholder="email"><br>
+                <input type="submit" class="w3-button w3-blue" v-bind:value="operation">
+
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    const { createApp } = Vue
+
+    createApp({
+        data() {
+            return {
+                user: {
+                    id: '22',
+                    name: '',
+                    username: '',
+                    email: ''
+                },
+                operation: 'Alta de Registro',
+                editIdDesctivado: true,
+            }
+        },
+        mounted() {
+            //poner el foco en el campo name
+            this.$refs.name.focus();
+        },
+        methods: {
+            validarDatos: function () {
+                //verificar que no haya campos vacios
+                if (this.user.name.length == 0) {
+                    alert("debe rellenar compo nombre");
+                    return false;
+                };
+                if (this.user.username.length == 0) {
+                    alert("debe rellenar compo username");
+                    return false;
+                }
+                if (this.user.email.length == 0) {
+                    alert("debe rellenar compo email");
+                    return false;
+                } else {
+                    return true
+                }
+            },
+            processUser: function (event) {
+                if (this.validarDatos()) {
+                    console.log("enviar datos al servidor...", JSON.stringify(this.user));
+                }
+            }
+        }
+    }).mount('#app');
+</script>
+
+</html>
