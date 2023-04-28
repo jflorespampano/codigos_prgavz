@@ -1,0 +1,10 @@
+el código php es una copia del archivo php de:php-crud-sqlite
+ambos utilizan PDO
+debian funcionar sin cambios pero en sqlite la tabla
+tipo_parte tiene su id como autoincrement
+
+y el mysql la tabla tipoparte NO tiene su id como
+autoincremente
+eso obliga a cambiar la interfaz en cuanto al manejo
+de este campo 
+particularmente el el botón <update>
