@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <div class="w3-container">
+        <form id="frmAlumno" class="w3-card w3-padding">
+            ID:
+            <input class="w3-input" type="number" name="id" value="1">
+            Matricula:
+            <input class="w3-input" type="text" name="matricula" value="887766">
+            Nombre:
+            <input class="w3-input" type="text" name="nombre" value="erwin romel">
+            Carrera:
+            <input class="w3-input" type="number" name="carrera" value="2">
+
+            <input type="button" onclick="put()" value="put(update)">
+            <input type="button" onclick="getAll()" value="getAll">
+            <input type="button" onclick="get()" value="get">
+            <input type="button" onclick="insert()" value="insert">
+
+        </form>
+    </div>
+    <p id="miParrafo"></p>
+    <script>
+        //update
+        function put() {
+            var formData = new FormData();
+            formData.append('id', 1);
+            formData.append('matricula', '112200');
+            formData.append('nombre', 'mauricio flores');
+            formData.append('carrera', 3);
+            fetch('./alumnoDAO.php', {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(formData)
+            }).then(
+                (response) => {
+                    if (response.ok) {
+                        response.text().then((datatxt) => {
+                            console.log(datatxt);
+                            miParrafo.innerText = datatxt;
+                        })
+                    } else {
+                        response.text().then((datatxt) => {
+                            console.log(datatxt);
+                        })
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
+        }
+        function getAll() {
+            fetch('./alumnoDAO.php', {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(
+                (response) => {
+                    if (response.ok) {
+                        response.json().then((data) => {
+                            console.log(JSON.stringify(data))
+                            miParrafo.innerText = JSON.stringify(data);
+                        })
+                    } else {
+                        response.text().then((datatxt) => {
+                            console.log(datatxt);
+                        })
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
+        }
+        function get() {
+            let cual = inputCual.value;
+            // console.log(cual);
+            let direccion = `./alumnoDAO.php?id=${cual}`;
+            fetch(direccion, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(
+                (response) => {
+                    if (response.ok) {
+                        response.json().then((data) => {
+                            console.log(JSON.stringify(data))
+                            miParrafo.innerText = JSON.stringify(data);
+                        })
+                    } else {
+                        response.text().then((datatxt) => {
+                            console.log(datatxt);
+                        })
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
+        }
+        function insert() {
+            let frm = document.querySelector("#frmAlumno");
+            var formData = new FormData(frm);
+            fetch('./alumnoDAO.php', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(formData)
+            }).then(
+                (response) => {
+                    if (response.ok) {
+                        response.text().then((datatxt) => {
+                            console.log(datatxt);
+                            miParrafo.innerText = datatxt;
+                        })
+                    } else {
+                        response.text().then((datatxt) => {
+                            console.log(datatxt);
+                        })
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
+        }
+        // put();
+        // get();
+    </script>
+</body>
+
+</html>
