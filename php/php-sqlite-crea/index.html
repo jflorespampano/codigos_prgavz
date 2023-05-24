@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>prov-par</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body class="w3-padding">
+    <div id="App" class="w3-container w3-row">
+        <div class="w3-col m4 w3-padding">
+            <div class="w3-panel w3-card w3-grey">
+                <p class="w3-dark-grey w3-padding">Alta</p>
+            </div>
+            <form id="frm_alta_parte" class="w3-container">
+                <p>
+                    <input name="id" class="w3-input" type="text" placeholder="id">
+                </p>
+                <p>
+                    <input name="nombre" class="w3-input" type="text" placeholder="nombre de la parte">
+                </p>
+                <p>
+                    <input name="anio" class="w3-input" type="text" placeholder="año de entrada al almacen">
+                </p>
+                <p>
+                    <input name="costo" class="w3-input" type="text" placeholder="costo de venta">
+                </p>
+                <p>
+                    <input id="btn_agregar" type="button" class="w3-button w3-white w3-border w3-border-blue"
+                        value="Agregar parte">
+                </p>
+            </form>
+            <input type="button" id="crearDB" class="w3-button w3-white w3-border w3-border-red"
+                onclick="crearDataBase()" value="Crear tablas de la base de datos">
+            <input type="button" id="poblarDB" class="w3-button w3-white w3-border w3-border-red"
+                onclick="poblarDataBase()" value="POBLAR tablas de la base de datos">
+        </div>
+        <div class="w3-col m8  w3-padding">
+            <div class="w3-panel w3-card w3-grey">
+                <p class="w3-dark-grey w3-padding">Lista</p>
+            </div>
+            <div id="mi_div" class="w3-panel w3-card w3-padding-16">
+                <table id="tbl_partes" class="w3-table-all">
+                    <thead>
+                        <tr class="w3-grey">
+                            <td>ID</td>
+                            <td>Nombre</td>
+                            <td>Año</td>
+                            <td>Costo</td>
+                            <td colspan="2">options</td>
+                        </tr>
+                    </thead>
+                    <tbody id="datos_tabla"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    function ponMensaje(mensaje) {
+        const div = document.createElement("div");
+        div.className = `w3-panel w3-card w3-blue w3-padding`;
+        div.appendChild(document.createTextNode(mensaje));
+        const container = document.querySelector("body");
+        const app = document.querySelector("#App");
+        container.insertBefore(div, app);
+        setTimeout(function () {
+            div.remove();
+        }, 3000);
+    }
+    function consultaPartes() {
+        fetch("consulta_partes.php")
+            .then(function (data) {
+                if (data.ok) {
+                    // data.text().then(datatxt => console.log(datatxt));
+                    // console.log(data);
+                    data.json().then(function (dataJ) {
+                        let s = ``;
+                        dataJ.forEach(e => {
+                            s += `<tr>
+                            <td>${e.id}</td><td>${e.nombre}</td>
+                            <td>${e.anio}</td><td>${e.costo}</td>
+                            <td><button onclick="editUser(event,this,${e.id})" class="w3-button w3-blue"
+                                    id="btnUpdate">update</button></td>
+                            <td><button onclick="deleteUser(event,this,${e.id})" class="w3-button w3-red"
+                                    id="btnDelete">delete</button></td>
+                        </tr>`;
+                        });
+                        document.getElementById("datos_tabla").innerHTML = s;
+                        // ponMensaje("Datos cargados correctamente");
+                    });
+                } else {
+                    data.text().then(data => console.log(data));
+                }
+            })
+
+
+    }
+    function crearDataBase() {
+        if (confirm('esto eliminara los datos de la Base de datos, desea proceder?') == true) {
+            fetch('crear_tablas.php').then(function (returnedValue) {
+                if (returnedValue.ok) {
+                    console.log("operacion correcta");
+                    returnedValue.text().then((txt) => {
+                        console.log('La tabla se creo si no existia: ', txt);
+                        ponMensaje("La tabla se creara si no existe");
+                    });
+                }
+            }).catch(function (err) {
+                console.log(err);
+            });
+
+        } else {
+            ponMensaje("No se eliminó ninguna dato ");
+        }
+    }
+    function poblarDataBase() {
+        if (confirm('esto poblara las tablas con datos de ejemplo, procedo?') == true) {
+            fetch('sqlite-puebla-db-provpar.php').then(function (returnedValue) {
+                if (returnedValue.ok) {
+                    console.log("operacion correcta");
+                    returnedValue.text().then((txt) => {
+                        console.log('La tabla se poblo si no existia: ', txt);
+                        ponMensaje("La tabla se poblo");
+                    });
+                }
+            }).catch(function (err) {
+                console.log(err);
+            });
+
+        } else {
+            ponMensaje("No se eliminó ninguna dato ");
+        }
+    }
+
+    function editUser(event, me, id) {
+        // console.log(event.target);
+        const tr = me.parentElement.parentElement;
+        // console.log(tr);
+        const ltd = tr.getElementsByTagName('td');
+        // console.log(ltd[1]);
+        // console.log(ltd[0].innerHTML);
+        document.forms['frm_alta_parte'].id.value = ltd[0].innerHTML;
+        document.forms['frm_alta_parte'].nombre.value = ltd[1].innerHTML;
+        document.forms['frm_alta_parte'].anio.value = ltd[2].innerHTML;
+        document.forms['frm_alta_parte'].costo.value = ltd[3].innerHTML;
+
+        document.querySelector('#btn_agregar').value = 'Actualizar Datos';
+        //falta actualizar los datos en la base de datos
+    }
+    function deleteUser(event, me, id) {
+        console.log('eliminar:', id);
+        const tr = me.parentElement.parentElement;
+        console.log('eliminando... ', tr.rowIndex);
+        document.getElementById("tbl_partes").deleteRow(tr.rowIndex);
+        //falta eliminarlo de la base de datos
+    }
+    window.onload = function () {
+        consultaPartes();
+        const boton = document.querySelector("#btn_agregar");
+        boton.addEventListener("click", function () {
+            if (document.querySelector('#btn_agregar').value === 'Agregar parte') {
+                fetch('inserta_parte.php', {
+                    method: 'post',
+                    body: new FormData(document.getElementById('frm_alta_parte'))
+                }).then(function (returnedValue) {
+                    if (returnedValue.ok) {
+                        console.log("operacion correcta");
+                        returnedValue.text().then((txt) => {
+                            console.log('muestro respuesta: ', txt);
+                            consultaPartes();
+                            ponMensaje(txt);
+                        });
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                });
+
+            } else {
+                //actualizar datos
+                console.log('falta agregar actualizacion de datos');
+                document.querySelector('#btn_agregar').value = 'Agregar parte';
+            }
+        })
+    }
+
+</script>
+
+</html>

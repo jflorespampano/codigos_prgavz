@@ -10,31 +10,72 @@
 <body>
     <div class="w3-container">
         <form id="frmAlumno" class="w3-card w3-padding">
-            ID:
-            <input class="w3-input" type="number" name="id" value="1">
-            Matricula:
-            <input class="w3-input" type="text" name="matricula" value="887766">
-            Nombre:
-            <input class="w3-input" type="text" name="nombre" value="erwin romel">
-            Carrera:
-            <input class="w3-input" type="number" name="carrera" value="2">
+            <h3>Prueba de conexion a php patron DAO</h3>
+            <fieldset class="w3-card">
+                <legend>Formulario: Datos de alumno</legend>
+                ID:
+                <input class="w3-input" type="number" name="id" value="1">
+                Matricula:
+                <input class="w3-input" type="text" name="matricula" value="887766">
+                Nombre:
+                <input class="w3-input" type="text" name="nombre" value="erwin romel">
+                Carrera:
+                <input class="w3-input" type="number" name="carrera" value="2">
 
-            <input type="button" onclick="put()" value="put(update)">
-            <input type="button" onclick="getAll()" value="getAll">
-            <input type="button" onclick="get()" value="get">
-            <input type="button" onclick="insert()" value="insert">
-
+            </fieldset>
+            <div class="w3-row w3-padding">
+                <div class="w3-col l4">
+                    Actualizar datos del alumno, rellene los campos antes de dar click
+                </div>
+                <div class="w3-col l2">
+                    <input class="w3-input w3-button w3-yellow" type="button" onclick="put()" value="put(update)">
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-col l4">
+                    Obtener todos los datos de la tabla alumnos
+                </div>
+                <div class="w3-col l2">
+                    <input class="w3-button w3-input w3-green" type="button" onclick="getAll()" value="getAll">
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-col l4">
+                    obtener el alumno con id=(valor del input ID)
+                </div>
+                <div class="w3-col l2">
+                    <input class="w3-button w3-input w3-green" type="button" onclick="get()" value="get">
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-col l4">
+                    Insertar los datos del formulario (el campo id es ignoirado, por que es autoincrement)
+                </div>
+                <div class="w3-col l2">
+                    <input class="w3-button w3-input w3-blue" type="button" onclick="insert()" value="insert">
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-col l4">
+                    Eliminar los datos con el id del campo id del formulario
+                </div>
+                <div class="w3-col l2">
+                    <input class="w3-button w3-input w3-red" type="button" onclick="delete_()" value="delete">
+                </div>
+            </div>
         </form>
+        <p class="w3-card w3-padding" id="miParrafo"></p>
     </div>
-    <p id="miParrafo"></p>
     <script>
         //update
         function put() {
-            var formData = new FormData();
-            formData.append('id', 1);
-            formData.append('matricula', '112200');
-            formData.append('nombre', 'mauricio flores');
-            formData.append('carrera', 3);
+            // var formData = new FormData();
+            // formData.append('id', 1);
+            // formData.append('matricula', '112200');
+            // formData.append('nombre', 'mauricio flores');
+            // formData.append('carrera', 3);
+            let frm = document.querySelector("#frmAlumno");
+            var formData = new FormData(frm);
             fetch('./alumnoDAO.php', {
                 method: "PUT",
                 headers: {
@@ -129,9 +170,38 @@
                     console.log(error);
                 })
         }
+        function delete_() {
+            let id = frmAlumno.id.value;
+            // console.log(id);
+            // return;
+            var formData = new FormData();
+            formData.append('id', id);
+
+            fetch('./alumnoDAO.php', {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(formData)
+            }).then(
+                (response) => {
+                    if (response.ok) {
+                        response.text().then((datatxt) => {
+                            console.log(datatxt);
+                            miParrafo.innerText = datatxt;
+                        })
+                    } else {
+                        response.text().then((datatxt) => {
+                            console.log(datatxt);
+                        })
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
+        }
         // put();
         // get();
     </script>
-</body>
 
-</html>
+
+</body>
