@@ -1,7 +1,7 @@
 # Instrucciones
 ## Requerimientos
 1. Tener instalado XAMP server.
-2. Opcinalmente tener un software para manejo de bases de datos SQLite, esto solo es necesario si quiere revisar, alterar o modificar la base de datos, le recomiendo el software SQLite Administrator que puede descargar desde: https://sqliteadmin.orbmu2k.de 
+2. Opcinalmente tener un software para manejo de bases de datos SQLite, esto solo es necesario si quiere revisar, alterar o modificar la base de datos, le recomiendo el software SQLite Administrator que puede descargar desde: https://sqliteadmin.orbmu2k.de , es software libre.
 
 ## Ejecución
 Para probar este ejercicio debe
@@ -11,6 +11,9 @@ Para probar este ejercicio debe
 4. Cargar la aplicación en su navegador así:
 5. http://localhost/php-sqlite-basico/index.html
 
+La aplicación le permitirá mostrar datos e insertar registros.
+
+# Explicación
 En la carpeta tiene una base de datos de SQLite llamada **prov-par.db** con la tabla:
 parte que fue creada con esta estructura:
 ```
@@ -38,23 +41,119 @@ http_response_code(200);
 echo json_encode($datos, JSON_UNESCAPED_UNICODE);
 ?>
 ```
+Para insertar un registro en la tabla parte:
+```
+<?php
+$baseDeDatos = new PDO("sqlite:./prov-par.db");
+$baseDeDatos->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$datosParte = [
+    "id" => 0,
+    "anio" => 2022,
+    "nombre" => "",
+    "costo" => 0.0
+];
+function insertaDato($baseDeDatos, $datosParte)
+{
+    $sentencia = $baseDeDatos->prepare("INSERT INTO parte(anio, nombre, costo)
+	VALUES(:anio, :nombre, :costo);");
 
-Para mostrar los datos en una tabla en su archivo index.html, use este código:
-HTML
+    # Debemos pasar a bindParam las variables, no podemos pasar el dato directamente
+    # debido a que la llamada es por referencia
+    $anio = $datosParte["anio"];
+    $nombre = $datosParte["nombre"];
+    $costo = $datosParte["costo"];
+    $sentencia->bindParam(":anio", $anio);
+    $sentencia->bindParam(":nombre", $nombre);
+    $sentencia->bindParam(":costo", $costo);
+    $resultado = $sentencia->execute();
+    if ($resultado === true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+//programa principal
+if (!empty($_POST)) {
+    //
+    $nombre = (isset($_POST["nombre"]) ? $_POST["nombre"] : "sin descripcion");
+    $anio = (isset($_POST["anio"]) ? $_POST["anio"] : "2023");
+    $costo = (isset($_POST["costo"]) ? $_POST["costo"] : "0");
+    $datosParte["anio"] = $anio;
+    $datosParte["nombre"] = $nombre;
+    $datosParte["costo"] = $costo;
+    $db = abrirDB();
+    if ($db) {
+        if (insertaDato($db, $datosParte)) {
+            http_response_code(200);
+            echo "se inserto el dato, salida: ok";
+        } else {
+            http_response_code(400);
+            echo "No se pudo insertar el dato, salida: false";
+        }
+    } else {
+        http_response_code(400);
+        echo json_encode("no se pudo abrir la base de datos, salida: false");
+    }
+} else {
+    http_response_code(400);
+    echo "No se recibieron datos, salida: false";
+}
+exit();
+?>
+    
 ```
-<table id="tbl_partes" class="w3-table-all">
-    <thead>
-        <tr class="w3-grey">
-            <td>ID</td>
-            <td>Nombre</td>
-            <td>Año</td>
-            <td>Costo</td>
-        </tr>
-    </thead>
-    <tbody id="datos_tabla"></tbody>
-</table>
+
+Su archivo index.html debera tener la forma:
 ```
-En el mismo archivo index.html necesitará el código JS:
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>prov-par</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body class="w3-padding">
+    <div id="App" class="w3-container w3-row">
+        <div class="w3-col m4 w3-padding">
+            <div class="w3-panel w3-card w3-grey">
+                <p class="w3-dark-grey w3-padding">Alta</p>
+            </div>
+            <form id="frm_alta_parte" class="w3-container">
+	       <input name="id" class="w3-input" type="text" placeholder="id">
+    	       <input name="nombre" class="w3-input" type="text" placeholder="nombre de la parte">
+               <input name="anio" class="w3-input" type="text" placeholder="año de entrada al almacen">
+               <input name="costo" class="w3-input" type="text" placeholder="costo de venta">
+               <input id="btn_agregar" type="button" class="w3-button w3-white w3-border w3-border-blue" value="Agregar parte">
+            </form>
+	</div>
+        <div class="w3-col m8  w3-padding">
+            <div class="w3-panel w3-card w3-grey">
+                <p class="w3-dark-grey w3-padding">Lista</p>
+            </div>
+            <div id="mi_div" class="w3-panel w3-card w3-padding-16">
+                <table id="tbl_partes" class="w3-table-all">
+		   <thead>
+                      <tr class="w3-grey">
+                         <td>ID</td>
+                         <td>Nombre</td>
+                         <td>Año</td>
+                         <td>Costo</td>
+                      </tr>
+                   </thead>
+                   <tbody id="datos_tabla"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+</script>
+</html>
+```
+
+Para mostrar los datos, en el mismo archivo index.html necesitará el código JS en el área de script:
 ```
 <script>
 window.onload = function () {
@@ -79,18 +178,7 @@ window.onload = function () {
 </script>
 ```
 
-Para insertar un registro, agregue este código a su archivo index.html:
-Código HTML:
-```
-<form id="frm_alta_parte" class="w3-container">
-    <input name="id" class="w3-input" type="text" placeholder="id">
-    <input name="nombre" class="w3-input" type="text" placeholder="nombre de la parte">
-    <input name="anio" class="w3-input" type="text" placeholder="año de entrada al almacen">
-    <input name="costo" class="w3-input" type="text" placeholder="costo de venta">
-    <input id="btn_agregar" type="button" class="w3-button w3-white w3-border w3-border-blue" value="Agregar parte">
-</form>
-```
-Agregue esté código a su script del archivo index.html 
+Para insertar un registro, agregue esté código a su script del archivo index.html 
 Código JS:
 ```
 const boton = document.querySelector("#btn_agregar");
