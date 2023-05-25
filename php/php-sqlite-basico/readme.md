@@ -41,12 +41,11 @@ http_response_code(200);
 echo json_encode($datos, JSON_UNESCAPED_UNICODE);
 ?>
 ```
-Para insertar un registro en la tabla parte:
+Para insertar un registro en la tabla parte use el código **inserta_parte.php**:
 ```
 <?php
 
 $datosParte = [
-    "id" => 0,
     "anio" => 2022,
     "nombre" => "",
     "costo" => 0.0
@@ -57,13 +56,7 @@ function insertaDato($datosParte)
     $baseDeDatos->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sentencia = $baseDeDatos->prepare("INSERT INTO parte(anio, nombre, costo)
 	VALUES(:anio, :nombre, :costo);");
-    $anio = $datosParte["anio"];
-    $nombre = $datosParte["nombre"];
-    $costo = $datosParte["costo"];
-    $sentencia->bindParam(":anio", $anio);
-    $sentencia->bindParam(":nombre", $nombre);
-    $sentencia->bindParam(":costo", $costo);
-    $resultado = $sentencia->execute();
+    $resultado = $sentencia->execute($datosParte);
     if ($resultado === true) {
         return true;
     } else {
@@ -73,13 +66,13 @@ function insertaDato($datosParte)
 //programa principal
 if (!empty($_POST)) {
     //leemos los datos enviado por el front end
-    $nombre = (isset($_POST["nombre"]) ? $_POST["nombre"] : "sin descripcion");
-    $anio = (isset($_POST["anio"]) ? $_POST["anio"] : "2023");
-    $costo = (isset($_POST["costo"]) ? $_POST["costo"] : "0");
+    $nombre = $_POST["nombre"];
+    $anio = $_POST["anio"];
+    $costo = $_POST["costo"];
     $datosParte["anio"] = $anio;
     $datosParte["nombre"] = $nombre;
     $datosParte["costo"] = $costo;
-    if (insertaDato($db, $datosParte)) {
+    if (insertaDato($datosParte)) {
         http_response_code(200);
         echo "se inserto el dato, salida: ok";
     } else {
@@ -91,6 +84,7 @@ if (!empty($_POST)) {
     echo "No se recibieron datos, salida: false";
 }
 exit();
+?>
 ?>
     
 ```
@@ -182,9 +176,7 @@ boton.addEventListener("click", function () {
         if (returnedValue.ok) {
             console.log("operacion correcta");
             returnedValue.text().then((txt) => {
-                console.log('muestro respuesta: ', txt);
-                consultaPartes();
-                    ponMensaje(txt);
+                console.log('Respuesta del servidor: ', txt);
             });
         }
     }).catch(function (err) {
