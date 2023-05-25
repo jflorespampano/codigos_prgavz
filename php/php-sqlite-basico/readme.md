@@ -44,21 +44,19 @@ echo json_encode($datos, JSON_UNESCAPED_UNICODE);
 Para insertar un registro en la tabla parte:
 ```
 <?php
-$baseDeDatos = new PDO("sqlite:./prov-par.db");
-$baseDeDatos->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 $datosParte = [
     "id" => 0,
     "anio" => 2022,
     "nombre" => "",
     "costo" => 0.0
 ];
-function insertaDato($baseDeDatos, $datosParte)
+function insertaDato($datosParte)
 {
+    $baseDeDatos = new PDO("sqlite:./prov-par.db");
+    $baseDeDatos->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sentencia = $baseDeDatos->prepare("INSERT INTO parte(anio, nombre, costo)
 	VALUES(:anio, :nombre, :costo);");
-
-    # Debemos pasar a bindParam las variables, no podemos pasar el dato directamente
-    # debido a que la llamada es por referencia
     $anio = $datosParte["anio"];
     $nombre = $datosParte["nombre"];
     $costo = $datosParte["costo"];
@@ -74,25 +72,19 @@ function insertaDato($baseDeDatos, $datosParte)
 }
 //programa principal
 if (!empty($_POST)) {
-    //
+    //leemos los datos enviado por el front end
     $nombre = (isset($_POST["nombre"]) ? $_POST["nombre"] : "sin descripcion");
     $anio = (isset($_POST["anio"]) ? $_POST["anio"] : "2023");
     $costo = (isset($_POST["costo"]) ? $_POST["costo"] : "0");
     $datosParte["anio"] = $anio;
     $datosParte["nombre"] = $nombre;
     $datosParte["costo"] = $costo;
-    $db = abrirDB();
-    if ($db) {
-        if (insertaDato($db, $datosParte)) {
-            http_response_code(200);
-            echo "se inserto el dato, salida: ok";
-        } else {
-            http_response_code(400);
-            echo "No se pudo insertar el dato, salida: false";
-        }
+    if (insertaDato($db, $datosParte)) {
+        http_response_code(200);
+        echo "se inserto el dato, salida: ok";
     } else {
         http_response_code(400);
-        echo json_encode("no se pudo abrir la base de datos, salida: false");
+        echo "No se pudo insertar el dato, salida: false";
     }
 } else {
     http_response_code(400);
