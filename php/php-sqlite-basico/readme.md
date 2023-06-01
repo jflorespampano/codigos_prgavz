@@ -1,3 +1,6 @@
+# SQLite
+Ejemplo básico de conexion de interfaz HTML con PHP y una base de datos en SQLite
+
 # Instrucciones
 ## Requerimientos
 1. Tener instalado XAMP server.

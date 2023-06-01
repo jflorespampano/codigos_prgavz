@@ -9,31 +9,7 @@
 
 <body>
     <div class="w3-container">
-        <div class="w3-row">
-            <div class="w3-col l4 w3-padding">
-                <div class="w3-panel w3-cyan w3-padding-16">
-                    Captura de datos
-                </div>
-            </div>
-            <div class="w3-col l8 w3-padding">
-                <div class="w3-panel w3-cyan w3-padding-16">
-                    Datos existentes
-                </div>
-                <table class="w3-table-all">
-                    <thead>
-                        <tr>
-                            <td>id</td>
-                            <td>UserId</td>
-                            <td>titulo</td>
-                            <td>Cuerpo</td>
-                        </tr>
-                    </thead>
-                    <tbody id="tbl_datos">
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
+        <p id="miParrafo"></p>
     </div>
     <!-- <input type="button" onclick="miFuncion()" value="llenar tabla"> -->
 </body>
@@ -41,7 +17,9 @@
 
     function muestraDatosJson(DatosJson) {
         //por ahora solo mostramos en la consola los datos enviados por el servidor
-        console.log(DatosJson.slice(0, 20));
+        const d = JSON.stringify(DatosJson.slice(0, 20));
+        console.log(d);
+        document.getElementById("miParrafo").innerText = d;
     }
     function callback1(data) {
         console.log(data);
@@ -59,7 +37,7 @@
     function leeJsonDesdeApiRest() {
         // solicirta los datos al servidor
         let p = fetch("https://jsonplaceholder.typicode.com/posts");
-        console.log(p);
+        //console.log(p);
         // cuando la promesa se resuelva ejecuta la funcion callback1
         p.then(callback1);
     }
