@@ -19,7 +19,7 @@ La aplicación le permitirá mostrar datos e insertar registros.
 # Explicación
 En la carpeta tiene una base de datos de SQLite llamada **prov-par.db** con la tabla:
 parte que fue creada con esta estructura:
-```
+```sql
 CREATE TABLE parte(
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		anio INTEGER NOT NULL,
@@ -33,7 +33,7 @@ Este ejercicio ya funciona, sin embargo a continuación le describo los elemento
 3. index.html
 
 Para leer los datos de la tabla **parte** use el código PHP: **consulta_partes.php**
-```
+```php
 <?php
 $baseDeDatos = new PDO("sqlite:./prov-par.db");
 $baseDeDatos->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -45,7 +45,7 @@ echo json_encode($datos, JSON_UNESCAPED_UNICODE);
 ?>
 ```
 Para insertar un registro en la tabla parte use el código **inserta_parte.php**:
-```
+```php
 <?php
 
 $datosParte = [
@@ -93,7 +93,7 @@ exit();
 ```
 
 Su archivo index.html debera tener la forma:
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -143,7 +143,7 @@ Su archivo index.html debera tener la forma:
 ```
 
 Para mostrar los datos, en el mismo archivo index.html necesitará el código JS en el área de script:
-```
+```javascript
 <script>
 window.onload = function () {
     fetch("consulta_partes.php")
@@ -169,7 +169,7 @@ window.onload = function () {
 
 Para insertar un registro, agregue esté código a su script del archivo index.html 
 Código JS:
-```
+```javascript
 const boton = document.querySelector("#btn_agregar");
 boton.addEventListener("click", function () {
     fetch('inserta_parte.php', {

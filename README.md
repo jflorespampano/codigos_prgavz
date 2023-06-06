@@ -47,7 +47,7 @@ Mozilla Corporation fue una de las principales voces detrás de la ruptura de la
  
 No obstante es soportado por los navegadores arriba mencioonados, a continución, veremos su uso.
 ### Abrir/crear base de datos
-```
+```javascript
     function abrirDB(){
         var db=openDatabase("personaDB","1.0","mis alumnos",5*1024*1024);
         return db;
@@ -56,7 +56,7 @@ No obstante es soportado por los navegadores arriba mencioonados, a continución
 Este comando esta abriendo (y si no la encuentra la crea) la base de datos personasDB, indicamos que es la primera version de la BD, un mensaje de descripcion, y el tamaño de la base de datos.
 
 ### Crear una tabla
-```
+```javascript
     function crear_tabla_persona(db){
         var sql="CREATE TABLE IF NOT EXISTS persona (id real uniqute, nombre text)";
         db.transaction(function(tx){
@@ -76,7 +76,7 @@ Este comando esta abriendo (y si no la encuentra la crea) la base de datos perso
 
 ```
 ### borrar datos
-```
+```javascript
     function borrar_tabla_persona(db){
         db.transaction(function(tx){
             tx.executeSql("DROP TABLE persona"(),[],function(tx,result){
@@ -94,7 +94,7 @@ Este comando esta abriendo (y si no la encuentra la crea) la base de datos perso
     }
 ```
 ### insertar datos
-```
+```javascript
     function insertar_persona(db,{id,nombre}){
         //insertar datos
         var sql="INSERT INTO persona(id, nombre) values(?,?)";
@@ -116,7 +116,7 @@ Este comando esta abriendo (y si no la encuentra la crea) la base de datos perso
 ```
 
 Veamos como insertar una persona usando estas funciones, necesitaremos un formulario:
-```
+```html
     <form id="frm_parsona">
         <input type="text" name="id" placehholder="id">
         <input type="text" name="nombre" placeholder="nombre">
@@ -126,7 +126,7 @@ Veamos como insertar una persona usando estas funciones, necesitaremos un formul
     <input type="button" value="mostrar personas" onclick="get_peronas()">
 ```
 La función de crear_db
-```
+```javascript
     function crear_db(){
         //
         var db=abrirDB();
@@ -134,7 +134,7 @@ La función de crear_db
     }
 ```
 La función agregar_persona sería:
-```
+```javascript
     function agregar_persona(){
         let f=document.getElementById("frm_parsona");
         data=new FormData(f);
@@ -149,7 +149,7 @@ La función agregar_persona sería:
     }
 ```
 ### consultar datos
-```
+```javascript
     function get_peronas(){
         //leer datos
         let sql="select * from persona;";

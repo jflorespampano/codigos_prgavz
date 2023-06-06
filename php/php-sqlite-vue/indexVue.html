@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>consulta a sqlite</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="w3-container w3-padding">
+            <div class="w3-row">
+                <div class="w3-col l4">
+                    <h3>Actualizar Registro</h3>
+                    <div class="w3-card">
+                        <form id="miformulario" action="">
+                            <label for="id" class="w3-input">ID</label>
+                            <input type="text" id="id" name="id" class="w3-input" v-model="tipoDato.id" ref="idDato"
+                                @focus="$event.target.select()">
+                            <label for="descripcion" class="w3-input">Descripción</label>
+                            <input type="text" id="descripcion" name="descripcion" class="w3-input"
+                                v-model="tipoDato.descripcion" @click="marcarTexto">
+                            <input type="submit" value="Ejemplo actualizar enviando JSON"
+                                class="w3-button w3-blue w3-input" @click.prevent="actualizaRegistroJSON()">
+                            <br>
+                            <input type="submit" value="Ejemplo actualizar enviando POST"
+                                class="w3-button w3-blue w3-input" @click.prevent="actualizaRegistroPOST()">
+                            <br>
+                            <input type="submit" v-bind="attrFrmButton" @click.prevent="eventoEditarActualizar()">
+                        </form>
+                    </div>
+                </div>
+                <div class="w3-col l8">
+                    <h4>{{titulo}}</h4>
+                    <div class="w3-container" style="display:inline-flex;">
+                        <table class="w3-table-all">
+                            <thead>
+                                <tr class="w3-blue">
+                                    <th>id</th>
+                                    <th>descripcion</th>
+                                    <th>opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="datosTipoParte">
+                                <tr v-for="td in tiposDatos">
+                                    <td>{{td.id}}</td>
+                                    <td>{{td.descripcion}}</td>
+                                    <td><input type="button" class="w3-button w3-yellow w3-input" value="Actualizar"
+                                            @click="actualizarRenglon(td)"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                titulo: "Tabla tipos de datos",
+                tipoDato: {
+                    id: '000',
+                    descripcion: 'dato sin descripcion'
+                },
+                tiposDatos: [],
+                attrFrmButton: {
+                    value: "boton de alta",
+                    class: "w3-button w3-blue w3-input"
+                }
+            }
+        },
+        methods: {
+            eventoEditarActualizar() {
+                boton = event.target;
+                if (boton.value == "boton de alta") {
+                    console.log("agregando datos...");
+                    //agregar código de alta de dato
+                } else {
+                    console.log("editando datos...");
+                    this.actualizaRegistroJSON();
+                }
+                this.attrFrmButton.value = "boton de alta";
+                this.attrFrmButton.class = "w3-button w3-blue w3-input"
+            },
+            actualizarRenglon(dato) {
+                this.tipoDato.id = dato.id;
+                this.tipoDato.descripcion = dato.descripcion;
+                this.$refs.idDato.focus();
+                this.attrFrmButton.value = "boton de editar";
+                this.attrFrmButton.class = "w3-button w3-yellow w3-input";
+                // console.log(event.target);
+            },
+            marcarTexto(event) {
+                // console.log(event.target);
+                event.target.select();
+            },
+            async cargarDatos() {
+                let data = await fetch('consulta_sqlite_basico.php');
+                let registros = await data.json();
+                this.tiposDatos = registros;
+                // console.log(registros);
+            },
+            actualizaRegistroJSON() {
+                var request = new Request('actualiza_sqlite_recibe_json.php', {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(this.tipoDato)
+                });
+                fetch(request).then((returnedValue) => {
+                    if (returnedValue.ok) {
+                        console.log("La solicitud se ejecuto correctamente\n");
+                        this.cargarDatos();
+                        returnedValue.text().then((txt) => {
+                            console.log('Respuesta del servidor: ', txt);
+                        });
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            },
+            actualizaRegistroPOST() {
+                // obtenemos los datos del formulario asi:
+                const data = new FormData(document.getElementById('miformulario'));
+
+                // o asi:
+                // const data = new FormData();
+                // data.append('id', this.tipoDato.id);
+                // data.append('descripcion', this.tipoDato.descripcion);
+
+                // llamamos al script que actualiza regisro
+                fetch('actualiza_sqlite_recibe_post.php', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(data)
+                }).then((response) => {
+                    if (response.ok) {
+                        console.log("La solicitud se ejecuto correctamente\n");
+                        this.cargarDatos();
+                        response.text().then(resp => {
+                            console.log(resp);
+                        });
+                    } else {
+                        console.log("no se pudoieron actualizar los datos")
+                    }
+                }).catch(function (err) {
+                    console.log("Error...");
+                    console.error(err);
+                });
+            }
+        },
+        mounted() {
+            this.cargarDatos();
+        }
+    }).mount('#app')
+
+</script>
+
+</html>

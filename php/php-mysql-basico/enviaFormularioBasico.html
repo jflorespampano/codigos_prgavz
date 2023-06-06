@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Alta tipo partes</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <div class="w3-content w3-padding ">
+        <div class="w3-row">
+            <div class="w3-col l4">
+                <div class="w3-card w3-padding">
+                    <form id="frmAltaTipoParte">
+                        <label for="id" class="w3-input">ID</label>
+                        <input type="text" id="id" name="id" class="w3-input">
+                        <label for="descripcion" class="w3-input">Descripcion</label>
+                        <input type="text" id="descripcion" name="descripcion" class="w3-input"><br>
+                        <input type="button" id="btnPrueba" class="w3-button w3-blue" value="Envia Datos de prueba"
+                            onclick="muestra('recibe_Formulario_Post.php')">
+                        <br><br>
+                        <input type="button" id="btnEnviar" class="w3-button w3-blue" value="Agregar tipo parte"
+                            onclick="muestra('inserta_tipoParte_post.php')">
+                    </form>
+                </div>
+
+            </div>
+            <div class="w3-col l8">
+                <table class="w3-table-all">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>descripcion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="datosTabla"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="w3-card w3-padding">
+            <p id="respuesta">
+
+            </p>
+        </div>
+    </div>
+</body>
+<script>
+    let url = "";
+    window.onload = function () {
+        cargarDatos();
+    }
+    function muestra(url) {
+        enviaDatos(url);
+    }
+
+    // document.querySelector("#frmAltaTipoParte").addEventListener('submit', function (evt) {
+    //     evt.preventDefault();
+    //     console.log(evt.target)
+    // });
+    async function cargarDatos() {
+        try {
+            const response = await fetch('devuelve_datos_json.php');
+            console.log(response.ok);
+            if (!response.ok) {
+                throw new Error("La red respondio not OK");
+            }
+            const datos = await response.json();
+            let s = '';
+            datos.forEach(e => {
+                s += `
+                    <tr>
+                        <td>${e.id}</td>
+                        <td>${e.descripcion}</td>
+                    </tr>
+                `;
+            });
+            document.querySelector("#datosTabla").innerHTML = s;
+
+        } catch (error) {
+            document.querySelector("#respuesta").innerText = error;
+            console.log(error);
+        }
+
+    }
+    function enviaDatos(url) {
+        data = new FormData(document.getElementById('frmAltaTipoParte'));
+        fetch(url, {
+            method: 'post',
+            body: new URLSearchParams(data)
+        }).then(function (returnedValue) {
+            if (returnedValue.ok) {
+                console.log("operacion correcta");
+                returnedValue.text().then((txt) => {
+                    console.log('repuesta ok: ', txt);
+                    document.querySelector("#respuesta").innerText = txt;
+                    // document.write('recibo de regreso: ', txt);
+                    cargarDatos();
+                });
+            } else {
+                console.log('respuesta NO ok: ', txt);
+                document.querySelector("#respuesta").innerText = txt;
+                // document.write('recibo de regreso: ', txt);
+            }
+        }).catch(function (err) {
+            document.querySelector("#respuesta").innerText = err;
+            console.log(err);
+        });
+
+    }
+
+</script>
+
+</html>

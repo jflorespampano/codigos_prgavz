@@ -14,7 +14,7 @@ Forma de entrega, el profesor la revisra mediante una lista de cotejo.
 
 ## tip 1
 El siguiente código revisa los gustos seleccionado y los muestra en la cosola:
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +46,7 @@ El siguiente código revisa los gustos seleccionado y los muestra en la cosola:
 </html>
 ```
 tip 2, poner en color rojo un input text bajo cierta condición:
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>

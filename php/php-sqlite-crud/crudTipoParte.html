@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+    <title>Inserta Tipo de Parte</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <div id="menu">
+        <div class="w3-bar w3-blue">
+            <a href="#" class="w3-bar-item w3-button" onclick="traeTodos(event)">Actualiza tabla</a>
+            <!-- <a href="#" class="w3-bar-item w3-button" onclick="buscaUno(event)">Muestra 1</a> -->
+            <a href="#" class="w3-bar-item w3-button" onclick="datoAbuscar(event)">Busca Dato</a>
+            <a href="#" class="w3-bar-item w3-button" onclick="enviarForm(event)">Inserta Envia(FRM)</a>
+            <a href="#" class="w3-bar-item w3-button" onclick="enviarJson(event)">Inserta Envia(Json)</a>
+            <a href="#" class="w3-bar-item w3-button" onclick="actualizaForm(event)">Actualiza Dato (envia el Frm)</a>
+            <a href="#" class="w3-bar-item w3-button" onclick="elimina(event)">Elimina dato</a>
+            <a href="#" class="w3-bar-item w3-button" onclick="acercaDe(event)">Acerca De</a>
+        </div>
+    </div>
+    <div id="app" class="w3-container w3-row w3-padding">
+        <div id="div_form" class="w3-card w3-col l4 w3-padding-16">
+            <h2>Datos del tipo de parte</h2>
+            <form id="miformulario" class="w3-contaier w3-padding">
+                <p>
+                    <label for="id">Su id</label>
+                    <input class="w3-input w3-border-top w3-hover-sepia" type="text" id="id" name="id"
+                        placeholder="id" />
+                </p>
+                <p>
+                    <label for="descripcion">Su descripcion</label>
+                    <input class="w3-input w3-border-top w3-hover-sepia" type="text" id="descripcion" name="descripcion"
+                        placeholder="decripcion" />
+                </p>
+            </form>
+            <div class="w3-container" id="mensaje">
+            </div>
+        </div>
+        <div id="div_table" class="w3-panel w3-col l8">
+            <h3>Datos actuales traidos desde SQLite DB *prov-par-2.db* </h3>
+            <table class="w3-table-all">
+                <thead>
+                    <tr class="w3-blue">
+                        <th>id</th>
+                        <th>descripcion</th>
+                        <th colspan="2">options</th>
+                    </tr>
+                </thead>
+                <tbody id="datosTabla">
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</body>
+<script>
+    const url = 'crudSQLite.php';
+    function verificaId() {
+        const id = document.getElementById("id").value;
+        if (!id) {
+            alert("debe indicar el id del dato");
+            return false;
+        };
+        return true;
+    }
+
+    function verificaForm() {
+        const id = document.getElementById("id").value;
+        if (!id) {
+            alert("debe indicar el id del dato");
+            return false;
+        };
+        if (document.getElementById("descripcion").value.length < 5) {
+            alert("La descripcion debe ser mayor a 5 caracteres");
+            return false;
+        }
+        return true;
+    }
+    function ponMensaje(m, seg) {
+        let msj = document.querySelector('#mensaje');
+        msj.innerHTML = `
+            <div class="w3-container w3-yellow w3-padding">${m}</div>
+        `;
+        setTimeout(function () {
+            msj.innerHTML = "";
+        }, 1000 * seg);
+    }
+    //
+    function acercaDe(evt) {
+        evt.preventDefault();
+        m = `
+            <p>
+            Esta aplicacion trabaja sobre <strong>JS</strong> puro 
+            y <strong>PHP 7</strong> <br>
+            El <strong>frontend</strong> esta diseñado usando w3css, 
+            lo puede cargar en su head así: <br><br>
+            &lt;link rel="stylesheet" 
+            href="https://www.w3schools.com/
+            w3css/4/w3.css"&gt;
+            <br><br>
+            El <strong>backend</strong> esta programado en PHP 7 con el 
+            servidor apache, el front end hace las solicitudes usando JS 
+            puro con <strong>fetch</strong>
+            </p>
+        `;
+        ponMensaje(m, 6);
+    }
+    //actualiza dato enviando el formulario miformulario
+    function actualizaForm(evt) {
+        evt.preventDefault();
+        if (!verificaForm()) {
+            return;
+        };
+        //obtenemos los datos del formulario
+        const data = new FormData(document.getElementById('miformulario'));
+        fetch(url, {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(data)
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    response.text().then(resp => {
+                        console.log(resp);
+                        llenaTabla();
+                    });
+                } else {
+                    console.log("no se pudoieron actualizar los datos")
+                }
+            })
+            .catch(function (err) {
+                console.log("Error...");
+                console.error(err);
+            });
+    }
+    //inserta dato enviando un formulario
+    function enviarForm(evt) {
+        evt.preventDefault();
+        if (!verificaForm()) {
+            return;
+        }
+        //obtenemos los datos del formulario
+        const data = new FormData(document.getElementById('miformulario'));
+        fetch(url, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(data)
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    response.text().then(resp => {
+                        console.log(resp);
+                        llenaTabla();
+                    });
+                } else {
+                    console.log("no se pudoieron insertar el dato")
+                }
+            })
+            .catch(function (err) {
+                console.log("Error...");
+                console.error(err);
+            });
+    }
+    //inserta dato enviando un json
+    function enviarJson(evt) {
+        evt.preventDefault();
+        //obtenemos los datos del formulario
+        const data = new FormData(document.getElementById('miformulario'));
+        const obj = Object.fromEntries(data);
+        // console.log(JSON.stringify(obj));
+        fetch(url, {
+            method: 'post',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(obj)
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    response.text().then(resp => {
+                        console.log(resp);
+                        llenaTabla();
+                    })
+                } else {
+                    console.log("no se pudoieron insertar el dato")
+                }
+            })
+            .catch(function (err) {
+                console.log("Error...");
+                console.error(err);
+            });
+    }
+    //busca un dato, 
+    function buscaDato(dab) {
+        let parametros = `?id=${dab}`;
+        //var request = new Request('prueba.php?movimiento=1&id=1&nombre=luisa&apellido=rosales&edad=4', 
+        let request = new Request(url + parametros,
+            {
+                method: 'get',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
+        fetch(request).then(function (returnedValue) {
+            if (returnedValue.ok) {
+                returnedValue.json().then((data) => {
+                    if (data.length === 0) {
+                        ponMensaje('No existe el dato', 3);
+                    } else {
+                        let s = '';
+                        s += `
+                                <tr>
+                                    <td>${data[0].id}</td>
+                                    <td>${data[0].descripcion}</td>
+                                </tr>
+                            `;
+                        document.querySelector('#datosTabla').innerHTML = s;
+                    }
+                });
+            } else {
+                console.log("no se pudo recuperar el dato")
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+    //
+    function buscarUno() {
+        let dab = document.querySelector("#buscar").value;
+        if (!dab) {
+            alert('No indico el dato a buscar dato');
+        } else {
+            // alert(dab);
+            buscaDato(dab)
+        }
+        let msj = document.querySelector('#mensaje');
+        msj.innerHTML = '';
+
+    }
+    //function leedatos a buscar
+    function datoAbuscar(evt) {
+        evt.preventDefault();
+        let msj = document.querySelector('#mensaje');
+        msj.innerHTML = `
+        <form id="frmBusca1" class="w3-card w3-blue w3-padding">
+            <p>
+                <label for="buscar">Indique el id a buscar</label>
+                <input class="w3-input w3-border-top w3-hover-sepia" type="text" id="buscar" name="buscar"
+                        placeholder="id" />
+            </p>
+            <input type="button" onclick="buscarUno()" value='buscar'">
+        </form>
+        `;
+
+    }
+    function llenaTabla() {
+        fetch(url, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(function (returnedValue) {
+            if (returnedValue.ok) {
+                // returnedValue.text().then(data => console.log(data));
+                returnedValue.json().then((data) => {
+                    // console.log('muestro respuesta: ', data);
+                    if (data.length === 0) {
+                        ponMensaje('No existen datos', 3);
+                    } else {
+                        let s = '';
+                        data.forEach(e => {
+                            s += `
+                                <tr>
+                                    <td>${e.id}</td>
+                                    <td>${e.descripcion}</td>
+                                    <td><button onclick="editUser({id:${e.id},descripcion:'${e.descripcion}'})" class="w3-button w3-blue">update</button></td>
+                                    <td><button onclick="deleteUser(${e.id})" class="w3-button w3-red">delete</button></td>
+                                </tr>
+                            `;
+                        });
+                        document.querySelector('#datosTabla').innerHTML = s;
+                    }
+                });
+            } else {
+                console.log("no se pudoieron recuperar los datos")
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+    //recupera todos los datos
+    function traeTodos(evt) {
+        evt.preventDefault();
+        llenaTabla();
+    }
+
+    //
+    function borraDato(dab) {
+        let parametros = `id=${dab}`;
+        let request = new Request(url,
+            {
+                method: 'delete',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(parametros)
+            });
+        fetch(request).then(function (returnedValue) {
+            if (returnedValue.ok) {
+                returnedValue.text().then(data => {
+                    console.log('al borrar: ', data);
+                    llenaTabla();
+                });
+            } else {
+                console.log("no se pudo recuperar el dato")
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+    function eliminaUno() {
+        let dab = document.querySelector("#buscar").value;
+        if (!dab) {
+            alert('No indico el dato a borrar');
+        } else {
+            // alert(dab);
+            borraDato(dab)
+        }
+        let msj = document.querySelector('#mensaje');
+        msj.innerHTML = '';
+    }
+    function elimina(evt) {
+        evt.preventDefault();
+        let msj = document.querySelector('#mensaje');
+        msj.innerHTML = `
+        <form id="frmBusca1" class="w3-card w3-red w3-padding">
+            <p>
+                <label for="buscar">Indique Su id a <strong>eliminar</strong></label>
+                <input class="w3-input w3-border-top w3-hover-sepia" type="text" id="buscar" name="buscar"
+                        placeholder="id" />
+            </p>
+            <input type="button" onclick="eliminaUno()" value='eliminar'">
+        </form>
+        `;
+    }
+    function editUser(e) {
+        console.log(e);
+        document.getElementById("id").value = e.id;
+        document.getElementById("descripcion").value = e.descripcion;
+        //se puede acceder a un elemento de html directamento x su id
+        //equivalente a: document.getElementById('descripcion');
+        descripcion.focus();
+    }
+    function deleteUser(dab) {
+        borraDato(dab);
+    }
+    window.onload = function () {
+        llenaTabla();
+    }
+</script>
+
+</html>
